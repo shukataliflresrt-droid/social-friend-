@@ -7,16 +7,87 @@
 <section class="card auth"><h2>আপনার অ্যাকাউন্টে প্রবেশ করুন</h2><p class="muted">Social Friend-এ যোগ দিন অথবা আপনার অ্যাকাউন্টে লগইন করুন।</p><div class="auth-tabs"><button class="active" data-auth="login">লগইন</button><button data-auth="signup">নতুন অ্যাকাউন্ট খুলুন</button></div>
 <form id="loginForm" class="auth-form show"><label for="loginEmail">ইমেইল</label><input id="loginEmail" type="email" autocomplete="email" placeholder="আপনার ইমেইল লিখুন" required><label for="loginPassword">পাসওয়ার্ড</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="পাসওয়ার্ড লিখুন" required><button class="action primary wide" type="submit">লগইন করুন</button></form>
 <form id="signupForm" class="auth-form"><label for="fullName">আপনার নাম</label><input id="fullName" autocomplete="name" placeholder="সম্পূর্ণ নাম লিখুন" required><label for="signupEmail">ইমেইল</label><input id="signupEmail" type="email" autocomplete="email" placeholder="আপনার ইমেইল লিখুন" required><label for="signupPassword">পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label><input id="signupPassword" type="password" minlength="8" autocomplete="new-password" placeholder="নতুন পাসওয়ার্ড তৈরি করুন" required><button class="action primary wide" type="submit">অ্যাকাউন্ট তৈরি করুন</button></form>
-<p class="notice" id="authNotice">এটি লগইন/রেজিস্ট্রেশনের প্রাথমিক ইন্টারফেস। নিরাপদ সার্ভার ও ডেটাবেজ এখনো যুক্ত হয়নি—তাই ফর্মে আসল পাসওয়ার্ড দেবেন না; কোনো তথ্য সংরক্ষণ বা পাঠানো হয় না।</p></section>
+<p class="notice" id="authNotice" role="status" aria-live="polite">Firebase অ্যাকাউন্ট ব্যবস্থার সঙ্গে সংযোগ করা হচ্ছে।</p><div id="signedIn" class="notice" hidden></div></section>
 <nav class="tabs"><button class="active" data-tab="home">হোম</button><button data-tab="friends">বন্ধু</button><button data-tab="bonus">বোনাস</button><button data-tab="profile">প্রোফাইল</button></nav>
 <section id="home" class="panel show"><div class="card"><h3>আপনার আপডেট লিখুন</h3><textarea id="postText" rows="3" placeholder="আপনার মনের কথা লিখুন..."></textarea><button class="action primary" id="publish">পোস্ট করুন</button></div><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article></div></section>
 <section id="friends" class="panel"><div class="card"><h2>আপনার বন্ধু</h2><p>নতুন মানুষ খুঁজুন এবং আপনার কমিউনিটি তৈরি করুন।</p><input placeholder="নাম দিয়ে খুঁজুন"><p class="muted">লাইভ বন্ধু অনুসন্ধান চালু করতে অ্যাকাউন্ট ও সার্ভার সংযোগ প্রয়োজন।</p></div></section>
 <section id="bonus" class="panel"><div class="card"><h2>Friend Bonus</h2><h1 style="color:#1769e0">$1</h1><p>প্রতি যোগ্য বন্ধুর জন্য (প্রস্তাবিত নিয়ম)</p><h1 style="color:#1769e0">$50</h1><p>৫০ জন যোগ্য বন্ধু হলে এককালীন বোনাস (প্রস্তাবিত নিয়ম)</p><p class="notice">এটি পরিকল্পনার ডেমো। যাচাই, প্রতারণা প্রতিরোধ, আইনগত পর্যালোচনা ও পেমেন্ট ব্যবস্থা ছাড়া কোনো বোনাস অর্জিত বা পরিশোধযোগ্য নয়।</p></div></section>
 <section id="profile" class="panel"><div class="card"><h2>প্রোফাইল</h2><p class="muted">প্রোফাইল ব্যবস্থাপনা চালু করতে নিরাপদ অ্যাকাউন্ট সংযোগ প্রয়োজন।</p></div></section>
 <p class="notice">Social Friend — প্রাথমিক ওয়েব ডেমো। পোস্ট স্থানীয়ভাবে দেখানো হয়; রিফ্রেশ করলে মুছে যাবে। এটি এখনো পূর্ণাঙ্গ লাইভ সোশ্যাল নেটওয়ার্ক নয়।</p></main>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script>
 document.querySelectorAll('[data-auth]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-auth]').forEach(x=>x.classList.toggle('active',x===b));document.getElementById('loginForm').classList.toggle('show',b.dataset.auth==='login');document.getElementById('signupForm').classList.toggle('show',b.dataset.auth==='signup')}));
-['loginForm','signupForm'].forEach(id=>document.getElementById(id).addEventListener('submit',e=>{e.preventDefault();alert('লগইন সার্ভার ও ডেটাবেজ এখনো যুক্ত হয়নি। নিরাপত্তার জন্য কোনো তথ্য পাঠানো বা সংরক্ষণ করা হয়নি।')}));
+const firebaseConfig = {
+  apiKey: "AIzaSyDQb4si-kYQ6BFW0_hD3hkNJEVJOgL5W50",
+  authDomain: "social-friend-d7163.firebaseapp.com",
+  projectId: "social-friend-d7163",
+  storageBucket: "social-friend-d7163.firebasestorage.app",
+  messagingSenderId: "18702879745",
+  appId: "1:18702879745:web:934adbfba6a9dc97190400",
+  measurementId: "G-5ZWBP64EJX"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const authNotice = document.getElementById('authNotice');
+const signedIn = document.getElementById('signedIn');
+function showAuthMessage(message, isError=false){authNotice.textContent=message;authNotice.style.color=isError?'#b42318':'#1769e0'}
+function friendlyAuthError(error){
+  const messages={
+    'auth/email-already-in-use':'এই ইমেইল দিয়ে আগে থেকেই অ্যাকাউন্ট আছে। লগইন করুন।',
+    'auth/invalid-email':'ইমেইল ঠিকানাটি সঠিক নয়।',
+    'auth/weak-password':'পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের দিন।',
+    'auth/user-not-found':'এই ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি।',
+    'auth/wrong-password':'পাসওয়ার্ড সঠিক নয়।',
+    'auth/invalid-credential':'ইমেইল বা পাসওয়ার্ড সঠিক নয়।',
+    'auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।',
+    'auth/network-request-failed':'ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।',
+    'auth/unauthorized-domain':'এই ওয়েবসাইটের ঠিকানা Firebase-এ অনুমোদন করতে হবে।'
+  };
+  return messages[error.code] || 'এখন কাজটি সম্পন্ন হয়নি। আবার চেষ্টা করুন। ('+(error.code||'error')+')';
+}
+document.getElementById('signupForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=document.getElementById('fullName').value.trim();
+  const email=document.getElementById('signupEmail').value.trim();
+  const password=document.getElementById('signupPassword').value;
+  const button=e.currentTarget.querySelector('button[type="submit"]');
+  button.disabled=true;showAuthMessage('আপনার অ্যাকাউন্ট তৈরি করা হচ্ছে…');
+  try{
+    const credential=await auth.createUserWithEmailAndPassword(email,password);
+    await credential.user.updateProfile({displayName:name});
+    showAuthMessage('অভিনন্দন! আপনার Social Friend অ্যাকাউন্ট তৈরি হয়েছে।');
+    e.currentTarget.reset();
+  }catch(error){showAuthMessage(friendlyAuthError(error),true)}
+  finally{button.disabled=false}
+});
+document.getElementById('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  const button=e.currentTarget.querySelector('button[type="submit"]');
+  button.disabled=true;showAuthMessage('লগইন করা হচ্ছে…');
+  try{
+    await auth.signInWithEmailAndPassword(email,password);
+    showAuthMessage('আপনি সফলভাবে Social Friend-এ লগইন করেছেন।');
+    e.currentTarget.reset();
+  }catch(error){showAuthMessage(friendlyAuthError(error),true)}
+  finally{button.disabled=false}
+});
+auth.onAuthStateChanged(user=>{
+  if(user){
+    signedIn.hidden=false;
+    signedIn.textContent='লগইন করা আছে: '+(user.displayName||user.email);
+    if(!document.getElementById('logoutButton')){
+      const logout=document.createElement('button');logout.id='logoutButton';logout.className='action wide';logout.textContent='লগআউট';
+      logout.addEventListener('click',()=>auth.signOut().then(()=>showAuthMessage('আপনি লগআউট করেছেন।')).catch(error=>showAuthMessage(friendlyAuthError(error),true)));
+      signedIn.append(logout);
+    }
+  }else{
+    signedIn.hidden=true;signedIn.textContent='';
+    const logout=document.getElementById('logoutButton');if(logout)logout.remove();
+  }
+});
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab))}));
 document.getElementById('publish').addEventListener('click',()=>{const t=document.getElementById('postText');if(!t.value.trim())return;const a=document.createElement('article');a.className='card';const p=document.createElement('p');p.textContent=t.value;a.innerHTML='<div class="row"><span class="avatar">You</span><strong>আপনি</strong></div>';a.append(p);const acts=document.createElement('div');acts.className='actions';acts.innerHTML='<button class="like">♡ লাইক</button>';a.append(acts);document.getElementById('feed').prepend(a);t.value=''});
 document.addEventListener('click',e=>{if(e.target.classList.contains('like'))e.target.textContent=e.target.textContent.includes('লাইক')?'♥ লাইক':'♡ লাইক';if(e.target.classList.contains('comment'))alert('মন্তব্য ফিচার লাইভ ব্যাকএন্ডের পরে চালু হবে।')});
