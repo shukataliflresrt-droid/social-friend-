@@ -1,0 +1,13 @@
+{
+  "name": "Social Friend",
+  "short_name": "Social Friend",
+  "description": "Connect with friends on Social Friend",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0879ef",
+  "theme_color": "#0879ef",
+  "icons": [
+    {"src":"social-friend-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
