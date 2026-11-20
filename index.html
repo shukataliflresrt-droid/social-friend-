@@ -166,10 +166,11 @@ body{background:#edf3ff;padding-bottom:88px}
 /* Private messenger and call interface */
 .messenger-card{padding:18px}.messenger-heading,.chat-user-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.messenger-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#e7efff;color:#0758dc;font-size:25px}.chat-start-row{display:flex;gap:8px;align-items:center}.chat-start-row input{flex:1;min-width:0}.chat-start-row button{white-space:nowrap;margin:8px 0}.chat-user-head{justify-content:flex-start;border-top:1px solid #e7edf8;border-bottom:1px solid #e7edf8;padding:12px 0;margin-top:12px}.chat-user-head .avatar{margin:0}.chat-user-head>div:nth-child(2){flex:1;min-width:0}.chat-user-head small{display:block;overflow-wrap:anywhere}.call-actions{display:flex;gap:7px}.call-actions button{border:0;border-radius:50%;width:40px;height:40px;background:#e8f0ff;color:#0758dc;font-size:19px}.chat-messages{height:min(48vh,420px);min-height:180px;overflow:auto;padding:12px 4px;display:flex;flex-direction:column;gap:9px;background:#f5f8ff;border-radius:15px;margin:12px 0}.chat-bubble{max-width:82%;padding:10px 13px;border-radius:16px;background:white;color:#17243a;box-shadow:0 2px 7px #123d8b12;overflow-wrap:anywhere}.chat-bubble.mine{align-self:flex-end;background:#0758dc;color:white}.chat-bubble small{display:block;font-size:10px;opacity:.7;margin-top:4px}.chat-compose{display:flex;gap:8px}.chat-compose input{flex:1;min-width:0}.chat-compose button{white-space:nowrap}.call-panel{padding:14px;background:#eef4ff;border-radius:16px;margin-top:14px}.call-panel video{width:100%;max-height:220px;background:#17243a;border-radius:12px;margin:5px 0;object-fit:cover}.call-panel .call-actions{justify-content:center}.call-panel .call-actions button{width:auto;border-radius:12px;padding:10px 18px;background:#0758dc;color:#fff}.call-panel #endCall{background:#c62828}.call-panel #acceptCall{background:#16834a}@media(max-width:420px){.chat-start-row{display:block}.chat-start-row button{width:100%}.chat-compose button{padding:10px}.call-actions button{width:36px;height:36px}}
 </style></head>
-<body><header class="top"><div class="top-inner"><div class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" role="img"><circle cx="32" cy="12" r="8" fill="currentColor"/><circle cx="13" cy="22" r="6" fill="currentColor"/><circle cx="51" cy="22" r="6" fill="currentColor"/><path d="M15 48c0-13 7-22 17-22s17 9 17 22c-9 8-25 8-34 0Z" fill="currentColor"/><path d="M3 43c0-8 4-13 10-15M61 43c0-8-4-13-10-15" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M42 43c0-6 8-8 11-2 3-6 11-4 11 2 0 7-11 13-11 13S42 50 42 43Z" fill="#f32682" stroke="#fff" stroke-width="2"/></svg></span><span class="brand-copy"><b>Social Friend</b><small>বন্ধুত্ব হোক আরও গভীর...</small></span></div><div class="top-icons"><button type="button" aria-label="নোটিফিকেশন" id="notifyBtn">♧</button><button type="button" aria-label="খুঁজুন" id="searchBtn">⌕</button><button type="button" aria-label="অ্যাকাউন্ট" id="accountBtn">♙</button></div></div></header><main class="wrap">
+<body><header class="top"><div class="top-inner"><div class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" role="img"><circle cx="32" cy="12" r="8" fill="currentColor"/><circle cx="13" cy="22" r="6" fill="currentColor"/><circle cx="51" cy="22" r="6" fill="currentColor"/><path d="M15 48c0-13 7-22 17-22s17 9 17 22c-9 8-25 8-34 0Z" fill="currentColor"/><path d="M3 43c0-8 4-13 10-15M61 43c0-8-4-13-10-15" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M42 43c0-6 8-8 11-2 3-6 11-4 11 2 0 7-11 13-11 13S42 50 42 43Z" fill="#f32682" stroke="#fff" stroke-width="2"/></svg></span><span class="brand-copy"><b>Social Friend</b><small>বন্ধুত্ব হোক আরও গভীর...</small></span></div><div class="top-icons"><select id="languageSwitch" aria-label="ভাষা পরিবর্তন" title="Language"><option value="bn">বাংলা</option><option value="en">English</option></select><button type="button" aria-label="নোটিফিকেশন" id="notifyBtn">♧</button><button type="button" aria-label="খুঁজুন" id="searchBtn">⌕</button><button type="button" aria-label="অ্যাকাউন্ট" id="accountBtn">♙</button></div></div></header><main class="wrap">
 <section class="hero"><h1>Connect • Share • Grow Together</h1><div>বন্ধু তৈরি করুন • মুহূর্ত শেয়ার করুন • একসঙ্গে এগিয়ে চলুন</div></section>
 <section class="card auth" id="authCard" hidden><h2>আপনার অ্যাকাউন্টে প্রবেশ করুন</h2><p class="muted">Social Friend-এ যোগ দিন অথবা আপনার অ্যাকাউন্টে লগইন করুন।</p><div class="auth-tabs"><button class="active" data-auth="login">লগইন</button><button data-auth="signup">নতুন অ্যাকাউন্ট খুলুন</button></div>
 <form id="loginForm" class="auth-form show"><label for="loginEmail">ইমেইল</label><input id="loginEmail" type="email" autocomplete="email" placeholder="আপনার ইমেইল লিখুন" required><label for="loginPassword">পাসওয়ার্ড</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="পাসওয়ার্ড লিখুন" required><button class="action primary wide" type="submit">লগইন করুন</button><button class="action wide" id="forgotPassword" type="button">পাসওয়ার্ড ভুলে গেছেন?</button></form>
+<div class="card" style="margin:12px 0;padding:14px"><h3 id="phoneLoginTitle">মোবাইল নম্বর দিয়ে লগইন</h3><p class="muted" id="phoneLoginHelp">দেশের কোডসহ নম্বর লিখুন, যেমন +9715XXXXXXXX।</p><label for="phoneNumber">মোবাইল নম্বর</label><input id="phoneNumber" type="tel" autocomplete="tel" placeholder="+9715XXXXXXXX"><div id="phoneRecaptcha"></div><button class="action wide" id="sendPhoneOtp" type="button">OTP পাঠান</button><div id="phoneOtpArea" hidden><label for="phoneOtp">SMS-এ পাওয়া OTP</label><input id="phoneOtp" inputmode="numeric" autocomplete="one-time-code" placeholder="৬ সংখ্যার OTP"><button class="action primary wide" id="verifyPhoneOtp" type="button">OTP যাচাই করে লগইন</button></div><p class="notice" id="phoneAuthStatus" role="status" aria-live="polite"></p></div>
 <form id="signupForm" class="auth-form"><label for="fullName">আপনার নাম</label><input id="fullName" autocomplete="name" placeholder="সম্পূর্ণ নাম লিখুন" required><label for="signupEmail">ইমেইল</label><input id="signupEmail" type="email" autocomplete="email" placeholder="আপনার ইমেইল লিখুন" required><label for="signupPassword">পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label><input id="signupPassword" type="password" minlength="8" autocomplete="new-password" placeholder="নতুন পাসওয়ার্ড তৈরি করুন" required><button class="action primary wide" type="submit">অ্যাকাউন্ট তৈরি করুন</button></form>
 <p class="notice" id="authNotice" role="status" aria-live="polite">Firebase অ্যাকাউন্ট ব্যবস্থার সঙ্গে সংযোগ করা হচ্ছে।</p><div id="signedIn" class="notice" hidden></div></section>
 
@@ -330,6 +331,48 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const storage = firebase.storage();
 const db = firebase.firestore();
+let phoneConfirmation = null;
+let phoneRecaptcha = null;
+document.getElementById('sendPhoneOtp').addEventListener('click',async()=>{
+ const phone=document.getElementById('phoneNumber').value.trim();
+ const status=document.getElementById('phoneAuthStatus');
+ if(!/^\\+[1-9]\\d{7,14}$/.test(phone)){status.textContent='দেশের কোডসহ সঠিক নম্বর লিখুন, যেমন +9715XXXXXXXX।';return;}
+ const button=document.getElementById('sendPhoneOtp');button.disabled=true;status.textContent='নিরাপত্তা যাচাই তৈরি হচ্ছে…';
+ try{
+  if(!phoneRecaptcha){phoneRecaptcha=new firebase.auth.RecaptchaVerifier('phoneRecaptcha',{size:'normal'});await phoneRecaptcha.render();}
+  phoneConfirmation=await auth.signInWithPhoneNumber(phone,phoneRecaptcha);
+  document.getElementById('phoneOtpArea').hidden=false;status.textContent='OTP পাঠানো হয়েছে। SMS দেখে কোড লিখুন।';
+ }catch(error){status.textContent=friendlyAuthError(error);if(phoneRecaptcha){try{phoneRecaptcha.clear();}catch(e){}phoneRecaptcha=null;}}
+ finally{button.disabled=false;}
+});
+document.getElementById('verifyPhoneOtp').addEventListener('click',async()=>{
+ const code=document.getElementById('phoneOtp').value.trim(),status=document.getElementById('phoneAuthStatus');
+ if(!phoneConfirmation){status.textContent='আগে OTP পাঠান।';return;}
+ if(!/^\\d{6}$/.test(code)){status.textContent='৬ সংখ্যার OTP লিখুন।';return;}
+ const button=document.getElementById('verifyPhoneOtp');button.disabled=true;status.textContent='OTP যাচাই হচ্ছে…';
+ try{await phoneConfirmation.confirm(code);status.textContent='মোবাইল নম্বর দিয়ে লগইন সফল হয়েছে।';}
+ catch(error){status.textContent=friendlyAuthError(error);}
+ finally{button.disabled=false;}
+});
+const languageText={
+ bn:{phoneTitle:'মোবাইল নম্বর দিয়ে লগইন',phoneHelp:'দেশের কোডসহ নম্বর লিখুন, যেমন +9715XXXXXXXX।',sendOtp:'OTP পাঠান',verifyOtp:'OTP যাচাই করে লগইন',home:'হোম',friends:'বন্ধু',messages:'বার্তা',profile:'প্রোফাইল',settings:'সেটিংস',post:'পোস্ট করুন',composer:'আপনার মনের কথা লিখুন',addMedia:'▧ ছবি / ভিডিও যোগ করুন'},
+ en:{phoneTitle:'Sign in with mobile number',phoneHelp:'Enter your number with country code, e.g. +9715XXXXXXXX.',sendOtp:'Send OTP',verifyOtp:'Verify OTP and sign in',home:'Home',friends:'Friends',messages:'Messages',profile:'Profile',settings:'Settings',post:'Publish post',composer:'Write what is on your mind',addMedia:'▧ Add photo / video'}
+};
+function applyLanguage(lang){
+ const d=languageText[lang]||languageText.bn;document.documentElement.lang=lang;
+ document.getElementById('phoneLoginTitle').textContent=d.phoneTitle;
+ document.getElementById('phoneLoginHelp').textContent=d.phoneHelp;
+ document.getElementById('sendPhoneOtp').textContent=d.sendOtp;
+ document.getElementById('verifyPhoneOtp').textContent=d.verifyOtp;
+ const nav=document.querySelectorAll('.bottom-nav [data-tab]');
+ nav.forEach(b=>{const key=b.dataset.tab;if(d[key])b.lastChild.textContent=d[key];});
+ const post=document.getElementById('publish');if(post)post.textContent='➤　'+d.post;
+ document.querySelector('#home .composer h3').textContent=d.composer;
+ document.querySelector('.upload-tools label').textContent=d.addMedia;
+ localStorage.setItem('sf-language',lang);
+}
+document.getElementById('languageSwitch').addEventListener('change',e=>applyLanguage(e.target.value));
+try{const savedLanguage=localStorage.getItem('sf-language')||'bn';document.getElementById('languageSwitch').value=savedLanguage;applyLanguage(savedLanguage);}catch(e){applyLanguage('bn');}
 const authNotice = document.getElementById('authNotice');
 const signedIn = document.getElementById('signedIn');
 function showAuthMessage(message, isError=false){authNotice.textContent=message;authNotice.style.color=isError?'#b42318':'#1769e0'}
