@@ -324,17 +324,7 @@ document.getElementById('voiceCall').addEventListener('click',()=>startPeerCall(
 document.getElementById('videoCall').addEventListener('click',()=>startPeerCall(true));
 document.getElementById('endCall').addEventListener('click',()=>finishCall(true));
 document.getElementById('acceptCall').addEventListener('click',async()=>{if(activeCall?.incoming)await acceptIncomingCall(activeCall.ref,activeCall.data);});
-auth.onAuthStateChanged(user=>{
- if(incomingCallUnsubscribe){incomingCallUnsubscribe();incomingCallUnsubscribe=null;}
- if(!user)return;
- incomingCallUnsubscribe=db.collection('calls').where('calleeId','==',user.uid).onSnapshot(snap=>{
-  snap.docChanges().forEach(change=>{if(change.type!=='added')return;const data=change.doc.data();if(data.status!=='ringing'||activeCall)return;
-   activeCall={incoming:true,ref:change.doc.ref,data};
-   document.getElementById('callPanel').hidden=false;document.getElementById('acceptCall').hidden=false;
-   safeText(document.getElementById('callTitle'),data.video?'ইনকামিং ভিডিও কল':'ইনকামিং অডিও কল');safeText(document.getElementById('callStatus'),'একটি ইনকামিং কল এসেছে। কল ধরতে নিচের বোতাম চাপুন।');
-  });
- },err=>console.warn('Incoming call listener:',err));
-});
+
 
 </script>
 
@@ -459,6 +449,18 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
   finally{button.disabled=false}
 });
 signedIn.hidden=true;
+auth.onAuthStateChanged(user=>{
+ if(incomingCallUnsubscribe){incomingCallUnsubscribe();incomingCallUnsubscribe=null;}
+ if(!user)return;
+ incomingCallUnsubscribe=db.collection('calls').where('calleeId','==',user.uid).onSnapshot(snap=>{
+  snap.docChanges().forEach(change=>{if(change.type!=='added')return;const data=change.doc.data();if(data.status!=='ringing'||activeCall)return;
+   activeCall={incoming:true,ref:change.doc.ref,data};
+   document.getElementById('callPanel').hidden=false;document.getElementById('acceptCall').hidden=false;
+   safeText(document.getElementById('callTitle'),data.video?'ইনকামিং ভিডিও কল':'ইনকামিং অডিও কল');safeText(document.getElementById('callStatus'),'একটি ইনকামিং কল এসেছে। কল ধরতে নিচের বোতাম চাপুন।');
+  });
+ },err=>console.warn('Incoming call listener:',err));
+});
+
 auth.onAuthStateChanged(async user=>{
   document.body.classList.toggle('authenticated',!!user);
   if(!user)friendsLoadedForUid=null;
