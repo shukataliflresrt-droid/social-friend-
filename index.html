@@ -162,6 +162,9 @@ body{background:#edf3ff;padding-bottom:88px}
 
 .auth[hidden]{display:none!important}
 @media(max-width:390px){.wrap{padding-left:9px;padding-right:9px}.actions button{font-size:11px}.photo-scene{height:165px}.brand-mark,.brand-mark svg{width:45px;height:45px}}
+
+/* Private messenger and call interface */
+.messenger-card{padding:18px}.messenger-heading,.chat-user-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.messenger-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#e7efff;color:#0758dc;font-size:25px}.chat-start-row{display:flex;gap:8px;align-items:center}.chat-start-row input{flex:1;min-width:0}.chat-start-row button{white-space:nowrap;margin:8px 0}.chat-user-head{justify-content:flex-start;border-top:1px solid #e7edf8;border-bottom:1px solid #e7edf8;padding:12px 0;margin-top:12px}.chat-user-head .avatar{margin:0}.chat-user-head>div:nth-child(2){flex:1;min-width:0}.chat-user-head small{display:block;overflow-wrap:anywhere}.call-actions{display:flex;gap:7px}.call-actions button{border:0;border-radius:50%;width:40px;height:40px;background:#e8f0ff;color:#0758dc;font-size:19px}.chat-messages{height:min(48vh,420px);min-height:180px;overflow:auto;padding:12px 4px;display:flex;flex-direction:column;gap:9px;background:#f5f8ff;border-radius:15px;margin:12px 0}.chat-bubble{max-width:82%;padding:10px 13px;border-radius:16px;background:white;color:#17243a;box-shadow:0 2px 7px #123d8b12;overflow-wrap:anywhere}.chat-bubble.mine{align-self:flex-end;background:#0758dc;color:white}.chat-bubble small{display:block;font-size:10px;opacity:.7;margin-top:4px}.chat-compose{display:flex;gap:8px}.chat-compose input{flex:1;min-width:0}.chat-compose button{white-space:nowrap}.call-panel{padding:14px;background:#eef4ff;border-radius:16px;margin-top:14px}.call-panel video{width:100%;max-height:220px;background:#17243a;border-radius:12px;margin:5px 0;object-fit:cover}.call-panel .call-actions{justify-content:center}.call-panel .call-actions button{width:auto;border-radius:12px;padding:10px 18px;background:#0758dc;color:#fff}.call-panel #endCall{background:#c62828}.call-panel #acceptCall{background:#16834a}@media(max-width:420px){.chat-start-row{display:block}.chat-start-row button{width:100%}.chat-compose button{padding:10px}.call-actions button{width:36px;height:36px}}
 </style></head>
 <body><header class="top"><div class="top-inner"><div class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" role="img"><circle cx="32" cy="12" r="8" fill="currentColor"/><circle cx="13" cy="22" r="6" fill="currentColor"/><circle cx="51" cy="22" r="6" fill="currentColor"/><path d="M15 48c0-13 7-22 17-22s17 9 17 22c-9 8-25 8-34 0Z" fill="currentColor"/><path d="M3 43c0-8 4-13 10-15M61 43c0-8-4-13-10-15" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M42 43c0-6 8-8 11-2 3-6 11-4 11 2 0 7-11 13-11 13S42 50 42 43Z" fill="#f32682" stroke="#fff" stroke-width="2"/></svg></span><span class="brand-copy"><b>Social Friend</b><small>বন্ধুত্ব হোক আরও গভীর...</small></span></div><div class="top-icons"><button type="button" aria-label="নোটিফিকেশন" id="notifyBtn">♧</button><button type="button" aria-label="খুঁজুন" id="searchBtn">⌕</button><button type="button" aria-label="অ্যাকাউন্ট" id="accountBtn">♙</button></div></div></header><main class="wrap">
 <section class="hero"><h1>Connect • Share • Grow Together</h1><div>বন্ধু তৈরি করুন • মুহূর্ত শেয়ার করুন • একসঙ্গে এগিয়ে চলুন</div></section>
@@ -175,14 +178,127 @@ body{background:#edf3ff;padding-bottom:88px}
 <div class="upload-preview" id="postMediaPreview"></div><div class="upload-status" id="postUploadStatus" role="status" aria-live="polite"></div>
 <button class="action primary wide" id="publish">➤　পোস্ট করুন</button></div></div></div><nav class="tabs" aria-label="প্রধান মেনু"><button class="active" data-tab="home"><span>⌂</span> হোম</button><button data-tab="friends"><span>♧</span> বন্ধু</button><button data-tab="bonus"><span>🎁</span> বোনাস</button><button data-tab="profile"><span>♙</span> প্রোফাইল</button></nav><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">SA</span><div><strong>Sakibud</strong><span class="muted">১ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>বন্ধু মানেই সুখ, বন্ধু মানেই শক্তি 💕</p><div class="photo-scene flowers" role="img" aria-label="ফুলের বাগানের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (২৪)</button><button class="comment">▤ মন্তব্য (৮)</button><button class="share">↗ শেয়ার</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">RI</span><div><strong>Rafiq Islam</strong><span class="muted">২ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>আজকের দিনটি সবার জন্য আনন্দময় হোক! ❤️</p><div class="photo-scene sunset" role="img" aria-label="সূর্যাস্তের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (১২)</button><button class="comment">▤ মন্তব্য (৩)</button><button class="share">↗ শেয়ার</button></div></article></div></section>
 <section id="friends" class="panel"><div class="card"><h2>আপনার বন্ধু</h2><p class="muted">নতুন বন্ধু খুঁজুন এবং পরিচিতদের সঙ্গে যুক্ত হোন।</p><input placeholder="নাম দিয়ে খুঁজুন" aria-label="বন্ধু খুঁজুন"><div class="person"><span class="avatar">RI</span><div class="person-info"><b>Rafiq Islam</b><small>বন্ধু হওয়ার আমন্ত্রণ</small></div><button type="button">বন্ধু হন</button></div><div class="person"><span class="avatar">MA</span><div class="person-info"><b>Mariya Akter</b><small>নতুন সদস্য</small></div><button type="button">বন্ধু হন</button></div><div class="person"><span class="avatar">RU</span><div class="person-info"><b>Rahim Uddin</b><small>কমিউনিটি সদস্য</small></div><button type="button">বন্ধু হন</button></div><p class="notice">এগুলো নমুনা প্রোফাইল; প্রকৃত বন্ধু তালিকার জন্য ডেটাবেজ সংযোগ প্রয়োজন।</p></div></section>
-<section id="messages" class="panel"><div class="card"><h2>বার্তা</h2><p class="muted">আপনার বন্ধুদের সঙ্গে ব্যক্তিগতভাবে কথা বলুন।</p><div class="person"><span class="avatar">RI</span><div class="person-info"><b>Rafiq Islam</b><small>চ্যাট শুরু করুন</small></div><button type="button">মেসেজ</button></div><div class="person"><span class="avatar">MA</span><div class="person-info"><b>Mariya Akter</b><small>চ্যাট শুরু করুন</small></div><button type="button">মেসেজ</button></div><p class="notice">চ্যাট এখনো ডেমো; লাইভ মেসেজিংয়ের জন্য নিরাপদ ডেটাবেজ ও রিয়েল-টাইম নিয়ম সেটআপ করতে হবে।</p></div></section>
+<section id="messages" class="panel">
+<div class="card messenger-card">
+ <div class="messenger-heading"><div><h2>ব্যক্তিগত মেসেঞ্জার</h2><p class="muted">বন্ধুর ইমেইল দিয়ে ব্যক্তিগত চ্যাট শুরু করুন।</p></div><span class="messenger-icon">✉</span></div>
+ <label for="chatEmail">বন্ধুর ইমেইল</label><div class="chat-start-row"><input id="chatEmail" type="email" placeholder="বন্ধুর ইমেইল লিখুন"><button id="startChat" class="action primary" type="button">চ্যাট শুরু</button></div>
+ <p id="chatStatus" class="notice" role="status" aria-live="polite">মেসেজ করতে লগইন করুন।</p>
+ <div id="chatRoom" hidden>
+  <div class="chat-user-head"><span class="avatar" id="chatAvatar">SF</span><div><b id="chatFriendName">বন্ধু</b><small id="chatFriendEmail" class="muted"></small></div><div class="call-actions"><button id="voiceCall" type="button" title="অডিও কল">☎</button><button id="videoCall" type="button" title="ভিডিও কল">▣</button></div></div>
+  <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+  <form id="chatForm" class="chat-compose"><input id="messageText" autocomplete="off" placeholder="আপনার মেসেজ লিখুন…" required><button class="action primary" type="submit">পাঠান ➤</button></form>
+ </div>
+ <div id="callPanel" class="call-panel" hidden><h3 id="callTitle">কল</h3><p id="callStatus">সংযোগ করা হচ্ছে…</p><video id="remoteVideo" autoplay playsinline></video><video id="localVideo" autoplay muted playsinline></video><div class="call-actions"><button id="acceptCall" type="button" hidden>কল ধরুন</button><button id="endCall" type="button">কল শেষ</button></div></div>
+</div></section>
 <section id="bonus" class="panel"><div class="card"><h2>Friend Bonus</h2><h1 style="color:#1769e0">$1</h1><p>প্রতি যোগ্য বন্ধুর জন্য (প্রস্তাবিত নিয়ম)</p><h1 style="color:#1769e0">$50</h1><p>৫০ জন যোগ্য বন্ধু হলে এককালীন বোনাস (প্রস্তাবিত নিয়ম)</p><p class="notice">এটি পরিকল্পনার ডেমো। যাচাই, প্রতারণা প্রতিরোধ, আইনগত পর্যালোচনা ও পেমেন্ট ব্যবস্থা ছাড়া কোনো বোনাস অর্জিত বা পরিশোধযোগ্য নয়।</p></div></section>
 <section id="profile" class="panel"><div class="card"><div class="profile-cover" id="profileCover"></div>
 <div class="upload-tools"><label for="profilePhotoInput">📷 প্রোফাইল ছবি বদলান</label><input id="profilePhotoInput" type="file" accept="image/*"><label for="coverPhotoInput">🖼️ কভার ছবি বদলান</label><input id="coverPhotoInput" type="file" accept="image/*"></div>
 <div class="upload-status" id="profileEditStatus" role="status" aria-live="polite">ছবি আপলোড করতে আগে লগইন করুন।</div>
 <div class="profile-head"><span class="avatar" id="profileAvatar">আপ</span><div><h2 style="margin:0" id="profileDisplayName">আপনার প্রোফাইল</h2><small class="muted">Social Friend সদস্য</small></div></div><div class="stats"><div><b>০</b><small>পোস্ট</small></div><div><b>০</b><small>বন্ধু</small></div><div><b>০</b><small>অনুসারী</small></div></div><button class="action primary wide" type="button" onclick="document.querySelector('[data-auth=login]').scrollIntoView({behavior:'smooth'})">প্রোফাইল সম্পাদনা</button><p class="notice">আপনার নিজের তথ্য লগইন করার পর সংরক্ষণ করা যাবে।</p></div></section>
 <nav class="bottom-nav" aria-label="নিচের মেনু"><button class="active" data-tab="home"><span>⌂</span>হোম</button><button data-tab="friends"><span>♧</span>বন্ধু</button><button class="create" data-tab="home" onclick="document.getElementById('postText').focus();document.getElementById('postText').scrollIntoView({behavior:'smooth',block:'center'})"><span>＋</span>পোস্ট</button><button data-tab="messages"><span>▤</span>বার্তা</button><button data-tab="profile"><span>♙</span>প্রোফাইল</button></nav><footer class="site-footer"><strong>Social Friend</strong><span>Connect • Share • Grow Together</span><small>আপনার বন্ধুত্বের নতুন ঠিকানা</small></footer></main>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js">
+/* Direct one-to-one chat and WebRTC call signalling */
+let activeChat=null, chatUnsubscribe=null, incomingCallUnsubscribe=null, activeCall=null, localStream=null;
+const chatStatus=document.getElementById('chatStatus');
+function chatNotice(message,error=false){chatStatus.textContent=message;chatStatus.style.color=error?'#b42318':'#1769e0';}
+function makeChatId(a,b){return [a,b].sort().join('_');}
+function safeText(el,value){el.textContent=value||'';}
+function stopChatListener(){if(chatUnsubscribe){chatUnsubscribe();chatUnsubscribe=null;}}
+function renderChatMessages(snapshot){
+ const box=document.getElementById('chatMessages');box.innerHTML='';
+ snapshot.forEach(doc=>{const m=doc.data();const bubble=document.createElement('div');bubble.className='chat-bubble'+(m.senderId===auth.currentUser?.uid?' mine':'');const body=document.createElement('div');body.textContent=m.text||'';bubble.append(body);const time=document.createElement('small');time.textContent=m.createdAt?.toDate?m.createdAt.toDate().toLocaleString():'এখন';bubble.append(time);box.append(bubble);});
+ box.scrollTop=box.scrollHeight;
+}
+async function beginChat(){
+ const user=auth.currentUser;if(!user){chatNotice('ব্যক্তিগত মেসেজ করতে আগে লগইন করুন।',true);return;}
+ const email=document.getElementById('chatEmail').value.trim().toLowerCase();
+ if(!email||email===user.email.toLowerCase()){chatNotice('বন্ধুর সঠিক ইমেইল লিখুন।',true);return;}
+ const btn=document.getElementById('startChat');btn.disabled=true;chatNotice('বন্ধুর অ্যাকাউন্ট খোঁজা হচ্ছে…');
+ try{
+  const found=await db.collection('publicUsers').where('email','==',email).limit(1).get();
+  if(found.empty)throw new Error('এই ইমেইলে Social Friend সদস্য পাওয়া যায়নি। বন্ধুকে আগে অ্যাকাউন্ট খুলতে বলুন।');
+  const friend=found.docs[0].data();if(!friend.uid||friend.uid===user.uid)throw new Error('এই বন্ধুর সঙ্গে চ্যাট শুরু করা যাচ্ছে না.');
+  const chatId=makeChatId(user.uid,friend.uid);
+  activeChat={id:chatId,friend};
+  safeText(document.getElementById('chatFriendName'),friend.displayName||'Social Friend সদস্য');
+  safeText(document.getElementById('chatFriendEmail'),friend.email);
+  safeText(document.getElementById('chatAvatar'),(friend.displayName||'SF').slice(0,2));
+  document.getElementById('chatRoom').hidden=false;
+  await db.collection('chats').doc(chatId).set({members:[user.uid,friend.uid],updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+  stopChatListener();
+  chatUnsubscribe=db.collection('chats').doc(chatId).collection('messages').orderBy('createdAt').limit(150).onSnapshot(renderChatMessages,err=>chatNotice('মেসেজ লোড হয়নি: '+err.message,true));
+  chatNotice('চ্যাট চালু হয়েছে। এখন মেসেজ পাঠাতে পারবেন।');
+ }catch(err){chatNotice(err.message||'চ্যাট শুরু করা যায়নি।',true);}
+ finally{btn.disabled=false;}
+}
+document.getElementById('startChat').addEventListener('click',beginChat);
+document.getElementById('chatForm').addEventListener('submit',async e=>{
+ e.preventDefault();const user=auth.currentUser,textValue=document.getElementById('messageText').value.trim();
+ if(!user||!activeChat||!textValue)return;
+ const input=document.getElementById('messageText'),button=e.currentTarget.querySelector('button');button.disabled=true;
+ try{await db.collection('chats').doc(activeChat.id).collection('messages').add({senderId:user.uid,text:textValue,createdAt:firebase.firestore.FieldValue.serverTimestamp()});await db.collection('chats').doc(activeChat.id).set({lastMessage:textValue,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});input.value='';}
+ catch(err){chatNotice('মেসেজ পাঠানো যায়নি: '+err.message,true);}
+ finally{button.disabled=false;}
+});
+async function startPeerCall(video){
+ const user=auth.currentUser;if(!user||!activeChat){chatNotice('কল করার আগে বন্ধুর সঙ্গে চ্যাট খুলুন।',true);return;}
+ if(!navigator.mediaDevices?.getUserMedia){chatNotice('এই ব্রাউজারে অডিও/ভিডিও কল সমর্থিত নয়।',true);return;}
+ try{
+  localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:video});
+  const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+  localStream.getTracks().forEach(track=>pc.addTrack(track,localStream));
+  const remote=new MediaStream();pc.ontrack=e=>{e.streams[0].getTracks().forEach(t=>remote.addTrack(t));document.getElementById('remoteVideo').srcObject=remote;};
+  document.getElementById('localVideo').srcObject=localStream;document.getElementById('localVideo').hidden=!video;document.getElementById('remoteVideo').hidden=!video;
+  const callRef=db.collection('calls').doc();
+  activeCall={pc,ref:callRef,role:'caller',video};
+  const callerCandidates=callRef.collection('callerCandidates');
+  pc.onicecandidate=e=>{if(e.candidate)callerCandidates.add(e.candidate.toJSON()).catch(console.warn);};
+  const offer=await pc.createOffer();await pc.setLocalDescription(offer);
+  await callRef.set({callerId:user.uid,calleeId:activeChat.friend.uid,chatId:activeChat.id,offer:{type:offer.type,sdp:offer.sdp},video,status:'ringing',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  callRef.collection('calleeCandidates').onSnapshot(snap=>snap.docChanges().forEach(change=>{if(change.type==='added')pc.addIceCandidate(new RTCIceCandidate(change.doc.data())).catch(console.warn);}));
+  document.getElementById('callPanel').hidden=false;safeText(document.getElementById('callTitle'),video?'ভিডিও কল':'অডিও কল');safeText(document.getElementById('callStatus'),'বন্ধুকে কল করা হচ্ছে…');
+  activeCall.candidateUnsub=callRef.collection('calleeCandidates').onSnapshot(snap=>snap.docChanges().forEach(change=>{if(change.type==='added')pc.addIceCandidate(new RTCIceCandidate(change.doc.data())).catch(console.warn);}));
+  activeCall.docUnsub=callRef.onSnapshot(doc=>{const data=doc.data();if(data?.answer&&!pc.currentRemoteDescription)pc.setRemoteDescription(new RTCSessionDescription(data.answer)).catch(console.warn);if(data?.status==='ended')finishCall(false);});
+ }catch(err){chatNotice('কল শুরু হয়নি: '+err.message,true);await finishCall(false);}
+}
+async function acceptIncomingCall(callRef,data){
+ try{
+  localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:!!data.video});
+  const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+  localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));const remote=new MediaStream();pc.ontrack=e=>e.streams[0].getTracks().forEach(t=>remote.addTrack(t));
+  document.getElementById('remoteVideo').srcObject=remote;document.getElementById('localVideo').srcObject=localStream;document.getElementById('localVideo').hidden=!data.video;document.getElementById('remoteVideo').hidden=!data.video;
+  const calleeCandidates=callRef.collection('calleeCandidates');pc.onicecandidate=e=>{if(e.candidate)calleeCandidates.add(e.candidate.toJSON()).catch(console.warn);};
+  await pc.setRemoteDescription(new RTCSessionDescription(data.offer));const answer=await pc.createAnswer();await pc.setLocalDescription(answer);
+  await callRef.update({answer:{type:answer.type,sdp:answer.sdp},status:'accepted'});
+  activeCall={pc,ref:callRef,role:'callee',video:!!data.video};
+  activeCall.candidateUnsub=callRef.collection('callerCandidates').onSnapshot(snap=>snap.docChanges().forEach(change=>{if(change.type==='added')pc.addIceCandidate(new RTCIceCandidate(change.doc.data())).catch(console.warn);}));
+  activeCall.docUnsub=callRef.onSnapshot(doc=>{if(doc.data()?.status==='ended')finishCall(false);});
+  document.getElementById('acceptCall').hidden=true;document.getElementById('callPanel').hidden=false;safeText(document.getElementById('callTitle'),data.video?'ভিডিও কল':'অডিও কল');safeText(document.getElementById('callStatus'),'কল সংযুক্ত হয়েছে।');
+ }catch(err){chatNotice('কল গ্রহণ করা যায়নি: '+err.message,true);try{await callRef.update({status:'ended'});}catch(_){}await finishCall(false);}
+}
+async function finishCall(update=true){
+ const c=activeCall;activeCall=null;
+ if(c){if(c.candidateUnsub)c.candidateUnsub();if(c.docUnsub)c.docUnsub();try{if(update)await c.ref.update({status:'ended'});}catch(_){}try{c.pc.close();}catch(_){}}
+ if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null;}
+ document.getElementById('callPanel').hidden=true;document.getElementById('localVideo').srcObject=null;document.getElementById('remoteVideo').srcObject=null;
+}
+document.getElementById('voiceCall').addEventListener('click',()=>startPeerCall(false));
+document.getElementById('videoCall').addEventListener('click',()=>startPeerCall(true));
+document.getElementById('endCall').addEventListener('click',()=>finishCall(true));
+document.getElementById('acceptCall').addEventListener('click',async()=>{if(activeCall?.incoming)await acceptIncomingCall(activeCall.ref,activeCall.data);});
+auth.onAuthStateChanged(user=>{
+ if(incomingCallUnsubscribe){incomingCallUnsubscribe();incomingCallUnsubscribe=null;}
+ if(!user)return;
+ incomingCallUnsubscribe=db.collection('calls').where('calleeId','==',user.uid).where('status','==','ringing').onSnapshot(snap=>{
+  snap.docChanges().forEach(change=>{if(change.type!=='added')return;const data=change.doc.data();if(activeCall)return;
+   activeCall={incoming:true,ref:change.doc.ref,data};
+   document.getElementById('callPanel').hidden=false;document.getElementById('acceptCall').hidden=false;
+   safeText(document.getElementById('callTitle'),data.video?'ইনকামিং ভিডিও কল':'ইনকামিং অডিও কল');safeText(document.getElementById('callStatus'),'একটি ইনকামিং কল এসেছে। কল ধরতে নিচের বোতাম চাপুন।');
+  });
+ },err=>console.warn('Incoming call listener:',err));
+});
+
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -243,6 +359,7 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
   try{
     const credential=await auth.createUserWithEmailAndPassword(email,password);
     try{await credential.user.updateProfile({displayName:name});}catch(profileError){console.warn('Profile name could not be saved:',profileError);}
+    await db.collection('publicUsers').doc(credential.user.uid).set({uid:credential.user.uid,displayName:name,email:email.toLowerCase(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
     showAuthMessage('অভিনন্দন! আপনার Social Friend অ্যাকাউন্ট তৈরি হয়েছে। আপনার ইমেইল যাচাইয়ের বার্তা এলে সেটি অনুসরণ করুন।');
     e.currentTarget.reset();
   }catch(error){showAuthMessage(friendlyAuthError(error),true)}
@@ -281,6 +398,7 @@ auth.onAuthStateChanged(async user=>{
   }
   tabs.hidden=!!user;loginForm.hidden=!!user;signupForm.hidden=!!user;
   if(user){
+    db.collection('publicUsers').doc(user.uid).set({uid:user.uid,displayName:user.displayName||'',email:(user.email||'').toLowerCase(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}).catch(err=>console.warn('Public profile sync:',err));
     renderProfile(user);
     setUploadStatus('profileEditStatus','প্রোফাইল ছবি ও কভার ছবি আপলোড করতে পারবেন।');
     signedIn.hidden=false;
