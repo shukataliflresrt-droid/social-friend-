@@ -570,10 +570,32 @@ async function uploadUserMedia(file,folder,onProgress){
   const max=isVideo?100*1024*1024:15*1024*1024;
   if(file.size>max)throw new Error(isVideo?'ভিডিও সর্বোচ্চ ১০০ MB হতে পারবে।':'ছবি সর্বোচ্চ ১৫ MB হতে পারবে।');
   const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(-90)||'upload';
-  const ref=storage.ref().child('users/'+user.uid+'/'+folder+'/'+Date.now()+'_'+safeName);
-  const task=ref.put(file,{contentType:file.type});
-  await new Promise((resolve,reject)=>task.on('state_changed',snap=>{if(onProgress)onProgress(Math.round(snap.bytesTransferred/snap.totalBytes*100));},reject,resolve));
-  return await ref.getDownloadURL();
+  let ref,task;
+  try{
+    ref=storage.ref().child('users/'+user.uid+'/'+folder+'/'+Date.now()+'_'+safeName);
+    task=ref.put(file,{contentType:file.type});
+    await new Promise((resolve,reject)=>task.on('state_changed',snap=>{
+      const total=snap.totalBytes||file.size||1;
+      const percent=Math.min(100,Math.round(snap.bytesTransferred/total*100));
+      if(onProgress)onProgress(percent);
+    },error=>reject(error),()=>resolve()));
+    return await ref.getDownloadURL();
+  }catch(error){
+    const code=error&&error.code?error.code:'unknown';
+    const messages={
+      'storage/unauthorized':'Firebase Storage অনুমতি দেয়নি (storage/unauthorized)। Storage Rules-এ লগইন করা ব্যবহারকারীর upload অনুমতি দিতে হবে।',
+      'storage/unauthenticated':'লগইন সেশন পাওয়া যায়নি। আবার লগইন করে চেষ্টা করুন।',
+      'storage/bucket-not-found':'Firebase Storage bucket পাওয়া যায়নি। Firebase Console-এ Storage চালু ও সঠিক bucket সেট করতে হবে।',
+      'storage/project-not-found':'Firebase project পাওয়া যায়নি। Firebase Storage project configuration পরীক্ষা করতে হবে।',
+      'storage/quota-exceeded':'Firebase Storage-এর quota শেষ হয়েছে।',
+      'storage/retry-limit-exceeded':'বারবার চেষ্টা করেও আপলোড হয়নি। ইন্টারনেট বা Storage সংযোগ পরীক্ষা করুন।',
+      'storage/canceled':'আপলোড বাতিল হয়েছে।',
+      'storage/invalid-checksum':'আপলোড করা ফাইল যাচাই করা যায়নি। আবার চেষ্টা করুন।',
+      'storage/unknown':'Firebase Storage থেকে অজানা ত্রুটি এসেছে।'
+    };
+    const message=messages[code]||((error&&error.message)||'অজানা আপলোড সমস্যা');
+    throw new Error(message+' [ '+code+' ]');
+  }
 }
 function renderProfile(user){
   if(!user)return;
