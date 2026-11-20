@@ -147,6 +147,19 @@ body{background:#edf3ff;padding-bottom:88px}
 .sunset:after{content:"";display:block;width:90px;height:90px;border-radius:50%;background:#ffe1a0;margin:40px auto;box-shadow:0 0 45px #ffd48b}
 .bottom-nav{padding:7px 8px calc(7px + env(safe-area-inset-bottom));max-width:760px;margin:auto;border-radius:18px 18px 0 0}
 .bottom-nav button{font-size:12px}.bottom-nav button span{font-size:23px}
+
+/* Profile and media upload controls */
+.upload-tools{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.upload-tools label,.upload-tools button{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid #d7e4fb;background:#edf4ff;color:#0755d9;border-radius:13px;padding:10px 13px;font:inherit;font-size:13px;font-weight:750;cursor:pointer}
+.upload-tools input[type=file]{display:none}
+.upload-status{font-size:13px;color:#52698e;min-height:20px;margin:7px 0}
+.upload-preview{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.upload-preview img,.upload-preview video{width:min(100%,180px);max-height:150px;object-fit:cover;border-radius:12px}
+.profile-cover{background-position:center;background-size:cover}
+.profile-avatar-img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.profile-head .avatar{overflow:hidden}
+#profileEditStatus{margin-top:10px}
+
 .auth[hidden]{display:none!important}
 @media(max-width:390px){.wrap{padding-left:9px;padding-right:9px}.actions button{font-size:11px}.photo-scene{height:165px}.brand-mark,.brand-mark svg{width:45px;height:45px}}
 </style></head>
@@ -157,14 +170,22 @@ body{background:#edf3ff;padding-bottom:88px}
 <form id="signupForm" class="auth-form"><label for="fullName">আপনার নাম</label><input id="fullName" autocomplete="name" placeholder="সম্পূর্ণ নাম লিখুন" required><label for="signupEmail">ইমেইল</label><input id="signupEmail" type="email" autocomplete="email" placeholder="আপনার ইমেইল লিখুন" required><label for="signupPassword">পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label><input id="signupPassword" type="password" minlength="8" autocomplete="new-password" placeholder="নতুন পাসওয়ার্ড তৈরি করুন" required><button class="action primary wide" type="submit">অ্যাকাউন্ট তৈরি করুন</button></form>
 <p class="notice" id="authNotice" role="status" aria-live="polite">Firebase অ্যাকাউন্ট ব্যবস্থার সঙ্গে সংযোগ করা হচ্ছে।</p><div id="signedIn" class="notice" hidden></div></section>
 
-<section id="home" class="panel show"><div class="card composer"><div class="row"><span class="avatar">আপ</span><div class="composer-main"><h3>আপনার মনের কথা লিখুন</h3><textarea id="postText" rows="2" placeholder="আপনার মনে কী চলছে?"></textarea><button class="action primary wide" id="publish">➤　পোস্ট করুন</button></div></div></div><nav class="tabs" aria-label="প্রধান মেনু"><button class="active" data-tab="home"><span>⌂</span> হোম</button><button data-tab="friends"><span>♧</span> বন্ধু</button><button data-tab="bonus"><span>🎁</span> বোনাস</button><button data-tab="profile"><span>♙</span> প্রোফাইল</button></nav><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">SA</span><div><strong>Sakibud</strong><span class="muted">১ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>বন্ধু মানেই সুখ, বন্ধু মানেই শক্তি 💕</p><div class="photo-scene flowers" role="img" aria-label="ফুলের বাগানের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (২৪)</button><button class="comment">▤ মন্তব্য (৮)</button><button class="share">↗ শেয়ার</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">RI</span><div><strong>Rafiq Islam</strong><span class="muted">২ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>আজকের দিনটি সবার জন্য আনন্দময় হোক! ❤️</p><div class="photo-scene sunset" role="img" aria-label="সূর্যাস্তের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (১২)</button><button class="comment">▤ মন্তব্য (৩)</button><button class="share">↗ শেয়ার</button></div></article></div></section>
+<section id="home" class="panel show"><div class="card composer"><div class="row"><span class="avatar">আপ</span><div class="composer-main"><h3>আপনার মনের কথা লিখুন</h3><textarea id="postText" rows="2" placeholder="আপনার মনে কী চলছে?"></textarea>
+<div class="upload-tools"><label for="postMediaInput">▧ ছবি / ভিডিও যোগ করুন</label><input id="postMediaInput" type="file" accept="image/*,video/*"><span class="notice" id="postMediaName">কোনো ফাইল নির্বাচন করা হয়নি</span></div>
+<div class="upload-preview" id="postMediaPreview"></div><div class="upload-status" id="postUploadStatus" role="status" aria-live="polite"></div>
+<button class="action primary wide" id="publish">➤　পোস্ট করুন</button></div></div></div><nav class="tabs" aria-label="প্রধান মেনু"><button class="active" data-tab="home"><span>⌂</span> হোম</button><button data-tab="friends"><span>♧</span> বন্ধু</button><button data-tab="bonus"><span>🎁</span> বোনাস</button><button data-tab="profile"><span>♙</span> প্রোফাইল</button></nav><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">SA</span><div><strong>Sakibud</strong><span class="muted">১ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>বন্ধু মানেই সুখ, বন্ধু মানেই শক্তি 💕</p><div class="photo-scene flowers" role="img" aria-label="ফুলের বাগানের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (২৪)</button><button class="comment">▤ মন্তব্য (৮)</button><button class="share">↗ শেয়ার</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">RI</span><div><strong>Rafiq Islam</strong><span class="muted">২ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>আজকের দিনটি সবার জন্য আনন্দময় হোক! ❤️</p><div class="photo-scene sunset" role="img" aria-label="সূর্যাস্তের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (১২)</button><button class="comment">▤ মন্তব্য (৩)</button><button class="share">↗ শেয়ার</button></div></article></div></section>
 <section id="friends" class="panel"><div class="card"><h2>আপনার বন্ধু</h2><p class="muted">নতুন বন্ধু খুঁজুন এবং পরিচিতদের সঙ্গে যুক্ত হোন।</p><input placeholder="নাম দিয়ে খুঁজুন" aria-label="বন্ধু খুঁজুন"><div class="person"><span class="avatar">RI</span><div class="person-info"><b>Rafiq Islam</b><small>বন্ধু হওয়ার আমন্ত্রণ</small></div><button type="button">বন্ধু হন</button></div><div class="person"><span class="avatar">MA</span><div class="person-info"><b>Mariya Akter</b><small>নতুন সদস্য</small></div><button type="button">বন্ধু হন</button></div><div class="person"><span class="avatar">RU</span><div class="person-info"><b>Rahim Uddin</b><small>কমিউনিটি সদস্য</small></div><button type="button">বন্ধু হন</button></div><p class="notice">এগুলো নমুনা প্রোফাইল; প্রকৃত বন্ধু তালিকার জন্য ডেটাবেজ সংযোগ প্রয়োজন।</p></div></section>
 <section id="messages" class="panel"><div class="card"><h2>বার্তা</h2><p class="muted">আপনার বন্ধুদের সঙ্গে ব্যক্তিগতভাবে কথা বলুন।</p><div class="person"><span class="avatar">RI</span><div class="person-info"><b>Rafiq Islam</b><small>চ্যাট শুরু করুন</small></div><button type="button">মেসেজ</button></div><div class="person"><span class="avatar">MA</span><div class="person-info"><b>Mariya Akter</b><small>চ্যাট শুরু করুন</small></div><button type="button">মেসেজ</button></div><p class="notice">চ্যাট এখনো ডেমো; লাইভ মেসেজিংয়ের জন্য নিরাপদ ডেটাবেজ ও রিয়েল-টাইম নিয়ম সেটআপ করতে হবে।</p></div></section>
 <section id="bonus" class="panel"><div class="card"><h2>Friend Bonus</h2><h1 style="color:#1769e0">$1</h1><p>প্রতি যোগ্য বন্ধুর জন্য (প্রস্তাবিত নিয়ম)</p><h1 style="color:#1769e0">$50</h1><p>৫০ জন যোগ্য বন্ধু হলে এককালীন বোনাস (প্রস্তাবিত নিয়ম)</p><p class="notice">এটি পরিকল্পনার ডেমো। যাচাই, প্রতারণা প্রতিরোধ, আইনগত পর্যালোচনা ও পেমেন্ট ব্যবস্থা ছাড়া কোনো বোনাস অর্জিত বা পরিশোধযোগ্য নয়।</p></div></section>
-<section id="profile" class="panel"><div class="card"><div class="profile-cover"></div><div class="profile-head"><span class="avatar">আপ</span><div><h2 style="margin:0">আপনার প্রোফাইল</h2><small class="muted">Social Friend সদস্য</small></div></div><div class="stats"><div><b>০</b><small>পোস্ট</small></div><div><b>০</b><small>বন্ধু</small></div><div><b>০</b><small>অনুসারী</small></div></div><button class="action primary wide" type="button" onclick="document.querySelector('[data-auth=login]').scrollIntoView({behavior:'smooth'})">প্রোফাইল সম্পাদনা</button><p class="notice">আপনার নিজের তথ্য লগইন করার পর সংরক্ষণ করা যাবে।</p></div></section>
+<section id="profile" class="panel"><div class="card"><div class="profile-cover" id="profileCover"></div>
+<div class="upload-tools"><label for="profilePhotoInput">📷 প্রোফাইল ছবি বদলান</label><input id="profilePhotoInput" type="file" accept="image/*"><label for="coverPhotoInput">🖼️ কভার ছবি বদলান</label><input id="coverPhotoInput" type="file" accept="image/*"></div>
+<div class="upload-status" id="profileEditStatus" role="status" aria-live="polite">ছবি আপলোড করতে আগে লগইন করুন।</div>
+<div class="profile-head"><span class="avatar" id="profileAvatar">আপ</span><div><h2 style="margin:0" id="profileDisplayName">আপনার প্রোফাইল</h2><small class="muted">Social Friend সদস্য</small></div></div><div class="stats"><div><b>০</b><small>পোস্ট</small></div><div><b>০</b><small>বন্ধু</small></div><div><b>০</b><small>অনুসারী</small></div></div><button class="action primary wide" type="button" onclick="document.querySelector('[data-auth=login]').scrollIntoView({behavior:'smooth'})">প্রোফাইল সম্পাদনা</button><p class="notice">আপনার নিজের তথ্য লগইন করার পর সংরক্ষণ করা যাবে।</p></div></section>
 <nav class="bottom-nav" aria-label="নিচের মেনু"><button class="active" data-tab="home"><span>⌂</span>হোম</button><button data-tab="friends"><span>♧</span>বন্ধু</button><button class="create" data-tab="home" onclick="document.getElementById('postText').focus();document.getElementById('postText').scrollIntoView({behavior:'smooth',block:'center'})"><span>＋</span>পোস্ট</button><button data-tab="messages"><span>▤</span>বার্তা</button><button data-tab="profile"><span>♙</span>প্রোফাইল</button></nav><footer class="site-footer"><strong>Social Friend</strong><span>Connect • Share • Grow Together</span><small>আপনার বন্ধুত্বের নতুন ঠিকানা</small></footer></main>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
 document.getElementById('accountBtn').addEventListener('click',()=>{const card=document.getElementById('authCard');card.hidden=!card.hidden;if(!card.hidden)card.scrollIntoView({behavior:'smooth',block:'start'});});
 document.getElementById('searchBtn').addEventListener('click',()=>{document.querySelector('#friends input')?.focus();document.querySelector('[data-tab="friends"]')?.click();});
@@ -181,6 +202,8 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
+const storage = firebase.storage();
+const db = firebase.firestore();
 const authNotice = document.getElementById('authNotice');
 const signedIn = document.getElementById('signedIn');
 function showAuthMessage(message, isError=false){authNotice.textContent=message;authNotice.style.color=isError?'#b42318':'#1769e0'}
@@ -258,6 +281,8 @@ auth.onAuthStateChanged(async user=>{
   }
   tabs.hidden=!!user;loginForm.hidden=!!user;signupForm.hidden=!!user;
   if(user){
+    renderProfile(user);
+    setUploadStatus('profileEditStatus','প্রোফাইল ছবি ও কভার ছবি আপলোড করতে পারবেন।');
     signedIn.hidden=false;
     signedIn.textContent='লগইন করা আছে: '+user.email;
     if(!document.getElementById('logoutButton')){
@@ -274,6 +299,62 @@ auth.onAuthStateChanged(async user=>{
   }
 });
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===b.dataset.tab && x.closest('.bottom-nav')===b.closest('.bottom-nav')));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab));if(b.closest('.tabs'))document.querySelectorAll('.tabs [data-tab]').forEach(x=>x.classList.toggle('active',x===b));if(b.closest('.bottom-nav'))document.querySelectorAll('.bottom-nav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));}));
-document.getElementById('publish').addEventListener('click',()=>{const t=document.getElementById('postText');if(!t.value.trim())return;const a=document.createElement('article');a.className='card';const p=document.createElement('p');p.textContent=t.value;a.innerHTML='<div class="row"><span class="avatar">You</span><strong>আপনি</strong></div>';a.append(p);const acts=document.createElement('div');acts.className='actions';acts.innerHTML='<button class="like">♡ লাইক</button>';a.append(acts);document.getElementById('feed').prepend(a);t.value=''});
+
+function setUploadStatus(id,message,isError=false){const el=document.getElementById(id);if(el){el.textContent=message;el.style.color=isError?'#b42318':'#1769e0';}}
+function requireSignedIn(){const user=auth.currentUser;if(!user){setUploadStatus('profileEditStatus','ছবি বা ভিডিও আপলোড করতে আগে লগইন করুন।',true);document.getElementById('authCard').hidden=false;document.getElementById('authCard').scrollIntoView({behavior:'smooth'});return null;}return user;}
+async function uploadUserMedia(file,folder,onProgress){
+  const user=requireSignedIn();if(!user)throw new Error('আগে লগইন করুন।');
+  if(!file)throw new Error('ফাইল নির্বাচন করুন।');
+  const isVideo=file.type.startsWith('video/'),isImage=file.type.startsWith('image/');
+  if(!isVideo&&!isImage)throw new Error('শুধু ছবি অথবা ভিডিও নির্বাচন করুন।');
+  const max=isVideo?100*1024*1024:15*1024*1024;
+  if(file.size>max)throw new Error(isVideo?'ভিডিও সর্বোচ্চ ১০০ MB হতে পারবে।':'ছবি সর্বোচ্চ ১৫ MB হতে পারবে।');
+  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(-90)||'upload';
+  const ref=storage.ref().child('users/'+user.uid+'/'+folder+'/'+Date.now()+'_'+safeName);
+  const task=ref.put(file,{contentType:file.type});
+  await new Promise((resolve,reject)=>task.on('state_changed',snap=>{if(onProgress)onProgress(Math.round(snap.bytesTransferred/snap.totalBytes*100));},reject,resolve));
+  return await ref.getDownloadURL();
+}
+function renderProfile(user){
+  if(!user)return;
+  const name=user.displayName||user.email||'আপনার প্রোফাইল';
+  document.getElementById('profileDisplayName').textContent=name;
+  const avatar=document.getElementById('profileAvatar');
+  avatar.innerHTML='';
+  if(user.photoURL){const img=document.createElement('img');img.src=user.photoURL;img.alt='প্রোফাইল ছবি';img.className='profile-avatar-img';avatar.append(img);}
+  else avatar.textContent=(name.trim()[0]||'আপ');
+  db.collection('users').doc(user.uid).get().then(doc=>{if(doc.exists&&doc.data().coverPhotoURL)document.getElementById('profileCover').style.backgroundImage='url("'+doc.data().coverPhotoURL.replace(/["\\]/g,'')+'")';}).catch(()=>{});
+}
+document.getElementById('profilePhotoInput').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0];if(!file)return;
+  try{setUploadStatus('profileEditStatus','প্রোফাইল ছবি আপলোড হচ্ছে…');const url=await uploadUserMedia(file,'profile',(p)=>setUploadStatus('profileEditStatus','আপলোড হচ্ছে '+p+'%'));const user=auth.currentUser;await user.updateProfile({photoURL:url});await db.collection('users').doc(user.uid).set({displayName:user.displayName||'',photoURL:url,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});renderProfile(user);setUploadStatus('profileEditStatus','প্রোফাইল ছবি সফলভাবে সংরক্ষণ হয়েছে।');}
+  catch(err){setUploadStatus('profileEditStatus',err.message||friendlyAuthError(err),true);}finally{e.target.value='';}
+});
+document.getElementById('coverPhotoInput').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0];if(!file)return;
+  try{setUploadStatus('profileEditStatus','কভার ছবি আপলোড হচ্ছে…');const url=await uploadUserMedia(file,'cover',(p)=>setUploadStatus('profileEditStatus','আপলোড হচ্ছে '+p+'%'));const user=auth.currentUser;await db.collection('users').doc(user.uid).set({coverPhotoURL:url,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});document.getElementById('profileCover').style.backgroundImage='url("'+url+'")';setUploadStatus('profileEditStatus','কভার ছবি সফলভাবে সংরক্ষণ হয়েছে।');}
+  catch(err){setUploadStatus('profileEditStatus',err.message||friendlyAuthError(err),true);}finally{e.target.value='';}
+});
+const postMediaInput=document.getElementById('postMediaInput');
+postMediaInput.addEventListener('change',()=>{const file=postMediaInput.files&&postMediaInput.files[0];const preview=document.getElementById('postMediaPreview');preview.innerHTML='';document.getElementById('postMediaName').textContent=file?file.name:'কোনো ফাইল নির্বাচন করা হয়নি';if(!file)return;const url=URL.createObjectURL(file);const media=document.createElement(file.type.startsWith('video/')?'video':'img');media.src=url;if(media.tagName==='VIDEO'){media.controls=true;media.playsInline=true;}media.alt='নির্বাচিত মিডিয়া';preview.append(media);});
+
+document.getElementById('publish').addEventListener('click',async()=>{
+  const t=document.getElementById('postText'),file=postMediaInput.files&&postMediaInput.files[0],user=auth.currentUser;
+  if(!t.value.trim()&&!file){setUploadStatus('postUploadStatus','পোস্টের লেখা বা ছবি/ভিডিও যোগ করুন।',true);return;}
+  if(!user){setUploadStatus('postUploadStatus','পোস্ট করতে আগে লগইন করুন।',true);document.getElementById('authCard').hidden=false;document.getElementById('authCard').scrollIntoView({behavior:'smooth'});return;}
+  const button=document.getElementById('publish');button.disabled=true;
+  try{
+    let mediaURL='',mediaType='';
+    if(file){setUploadStatus('postUploadStatus','মিডিয়া আপলোড হচ্ছে…');mediaURL=await uploadUserMedia(file,'posts',(p)=>setUploadStatus('postUploadStatus','মিডিয়া আপলোড হচ্ছে '+p+'%'));mediaType=file.type.startsWith('video/')?'video':'image';}
+    const post={uid:user.uid,displayName:user.displayName||user.email||'সদস্য',text:t.value.trim(),mediaURL,mediaType,createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+    await db.collection('posts').add(post);
+    const a=document.createElement('article');a.className='card';const head=document.createElement('div');head.className='row';const avatar=document.createElement('span');avatar.className='avatar';avatar.textContent=(user.displayName||'আপ')[0];const strong=document.createElement('strong');strong.textContent=user.displayName||'আপনি';head.append(avatar,strong);a.append(head);
+    if(post.text){const p=document.createElement('p');p.textContent=post.text;a.append(p);}
+    if(mediaURL){const media=document.createElement(mediaType==='video'?'video':'img');media.src=mediaURL;media.className='post-photo';if(mediaType==='video'){media.controls=true;media.playsInline=true;}media.alt='আপলোড করা মিডিয়া';a.append(media);}
+    const acts=document.createElement('div');acts.className='actions';acts.innerHTML='<button class="like">♡ লাইক</button>';a.append(acts);document.getElementById('feed').prepend(a);
+    t.value='';postMediaInput.value='';document.getElementById('postMediaPreview').innerHTML='';document.getElementById('postMediaName').textContent='কোনো ফাইল নির্বাচন করা হয়নি';setUploadStatus('postUploadStatus','আপনার পোস্ট সফলভাবে প্রকাশ হয়েছে।');
+  }catch(err){setUploadStatus('postUploadStatus',err.message||'আপলোড করা যায়নি। Firebase Storage/Firestore সেটিংস পরীক্ষা করুন।',true);}
+  finally{button.disabled=false;}
+});const t=document.getElementById('postText');if(!t.value.trim())return;const a=document.createElement('article');a.className='card';const p=document.createElement('p');p.textContent=t.value;a.innerHTML='<div class="row"><span class="avatar">You</span><strong>আপনি</strong></div>';a.append(p);const acts=document.createElement('div');acts.className='actions';acts.innerHTML='<button class="like">♡ লাইক</button>';a.append(acts);document.getElementById('feed').prepend(a);t.value=''});
 document.addEventListener('click',e=>{if(e.target.classList.contains('like'))e.target.textContent=e.target.textContent.includes('লাইক')?'♥ লাইক':'♡ লাইক';if(e.target.classList.contains('comment'))alert('মন্তব্য ফিচার লাইভ ব্যাকএন্ডের পরে চালু হবে।')});
 </script></body></html>
