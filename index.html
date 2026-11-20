@@ -177,7 +177,7 @@ body{background:#edf3ff;padding-bottom:88px}
 <div class="upload-tools"><label for="postMediaInput">▧ ছবি / ভিডিও যোগ করুন</label><input id="postMediaInput" type="file" accept="image/*,video/*"><span class="notice" id="postMediaName">কোনো ফাইল নির্বাচন করা হয়নি</span></div>
 <div class="upload-preview" id="postMediaPreview"></div><div class="upload-status" id="postUploadStatus" role="status" aria-live="polite"></div>
 <button class="action primary wide" id="publish">➤　পোস্ট করুন</button></div></div></div><nav class="tabs" aria-label="প্রধান মেনু"><button class="active" data-tab="home"><span>⌂</span> হোম</button><button data-tab="friends"><span>♧</span> বন্ধু</button><button data-tab="bonus"><span>🎁</span> বোনাস</button><button data-tab="profile"><span>♙</span> প্রোফাইল</button></nav><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">SA</span><div><strong>Sakibud</strong><span class="muted">১ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>বন্ধু মানেই সুখ, বন্ধু মানেই শক্তি 💕</p><div class="photo-scene flowers" role="img" aria-label="ফুলের বাগানের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (২৪)</button><button class="comment">▤ মন্তব্য (৮)</button><button class="share">↗ শেয়ার</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">RI</span><div><strong>Rafiq Islam</strong><span class="muted">২ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>আজকের দিনটি সবার জন্য আনন্দময় হোক! ❤️</p><div class="photo-scene sunset" role="img" aria-label="সূর্যাস্তের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (১২)</button><button class="comment">▤ মন্তব্য (৩)</button><button class="share">↗ শেয়ার</button></div></article></div></section>
-<section id="friends" class="panel"><div class="card"><h2>আপনার বন্ধু</h2><p class="muted">নতুন বন্ধু খুঁজুন এবং পরিচিতদের সঙ্গে যুক্ত হোন।</p><input placeholder="নাম দিয়ে খুঁজুন" aria-label="বন্ধু খুঁজুন"><div class="person"><span class="avatar">RI</span><div class="person-info"><b>Rafiq Islam</b><small>বন্ধু হওয়ার আমন্ত্রণ</small></div><button type="button">বন্ধু হন</button></div><div class="person"><span class="avatar">MA</span><div class="person-info"><b>Mariya Akter</b><small>নতুন সদস্য</small></div><button type="button">বন্ধু হন</button></div><div class="person"><span class="avatar">RU</span><div class="person-info"><b>Rahim Uddin</b><small>কমিউনিটি সদস্য</small></div><button type="button">বন্ধু হন</button></div><p class="notice">এগুলো নমুনা প্রোফাইল; প্রকৃত বন্ধু তালিকার জন্য ডেটাবেজ সংযোগ প্রয়োজন।</p></div></section>
+<section id="friends" class="panel"><div class="card"><h2>বন্ধু খুঁজুন</h2><p class="muted">Social Friend-এ থাকা সদস্যদের খুঁজে বন্ধু হিসেবে যুক্ত করুন।</p><label for="friendSearchInput">নাম বা ইমেইল</label><input id="friendSearchInput" type="search" placeholder="নাম বা ইমেইল লিখুন"><button id="friendSearchButton" class="action primary wide" type="button">সদস্য খুঁজুন</button><p id="friendSearchStatus" class="notice" role="status"></p><div id="friendSearchResults"></div></div><div class="card"><h2>আপনার বন্ধু</h2><div id="myFriendsList"><p class="notice">বন্ধুদের তালিকা দেখতে লগইন করুন।</p></div></div></section>
 <section id="messages" class="panel">
 <div class="card messenger-card">
  <div class="messenger-heading"><div><h2>ব্যক্তিগত মেসেঞ্জার</h2><p class="muted">বন্ধুর ইমেইল দিয়ে ব্যক্তিগত চ্যাট শুরু করুন।</p></div><span class="messenger-icon">✉</span></div>
@@ -383,7 +383,6 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
 });
 signedIn.hidden=true;
 auth.onAuthStateChanged(async user=>{
-  const expectedEmail='shukataliflresrt@gmail.com';
   const tabs=document.querySelector('.auth-tabs');
   const loginForm=document.getElementById('loginForm');
   const signupForm=document.getElementById('signupForm');
@@ -392,17 +391,11 @@ auth.onAuthStateChanged(async user=>{
     signedIn.hidden=true;signedIn.textContent='';
     const logout=document.getElementById('logoutButton');if(logout)logout.remove();
   };
-  if(user && (user.email||'').toLowerCase()!==expectedEmail){
-    clearSessionUI();
-    showAuthMessage('অন্য একটি অ্যাকাউন্টের পুরোনো সেশন পাওয়া গেছে। সেটি বন্ধ করা হচ্ছে—এরপর আপনার নিজের ইমেইল দিয়ে প্রবেশ করুন।');
-    try{await auth.signOut();}catch(error){showAuthMessage('পুরোনো সেশন বন্ধ করা যায়নি: '+friendlyAuthError(error),true);}
-    clearSessionUI();
-    return;
-  }
   tabs.hidden=!!user;loginForm.hidden=!!user;signupForm.hidden=!!user;
   if(user){
     db.collection('publicUsers').doc(user.uid).set({uid:user.uid,displayName:user.displayName||'',email:(user.email||'').toLowerCase(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}).catch(err=>console.warn('Public profile sync:',err));
     renderProfile(user);
+    loadMyFriends(user);
     setUploadStatus('profileEditStatus','প্রোফাইল ছবি ও কভার ছবি আপলোড করতে পারবেন।');
     signedIn.hidden=false;
     signedIn.textContent='লগইন করা আছে: '+user.email;
@@ -419,6 +412,55 @@ auth.onAuthStateChanged(async user=>{
     clearSessionUI();
   }
 });
+
+// Real member directory and friend connections
+function friendStatus(message,error=false){const el=document.getElementById('friendSearchStatus');el.textContent=message;el.style.color=error?'#b42318':'#1769e0';}
+function friendDocId(a,b){return [a,b].sort().join('_');}
+async function searchMembers(){
+ const user=auth.currentUser, q=document.getElementById('friendSearchInput').value.trim().toLowerCase();
+ const results=document.getElementById('friendSearchResults');results.innerHTML='';
+ if(!user){friendStatus('সদস্য খুঁজতে আগে লগইন করুন।',true);return;}
+ if(q.length<2){friendStatus('কমপক্ষে ২টি অক্ষর লিখুন।',true);return;}
+ friendStatus('সদস্য খোঁজা হচ্ছে…');
+ try{
+  const snap=await db.collection('publicUsers').limit(100).get();
+  const matches=snap.docs.map(d=>d.data()).filter(p=>p.uid!==user.uid&&((p.displayName||'').toLowerCase().includes(q)||(p.email||'').toLowerCase().includes(q))).slice(0,20);
+  if(!matches.length){friendStatus('কোনো সদস্য পাওয়া যায়নি।');return;}
+  friendStatus(matches.length+' জন সদস্য পাওয়া গেছে।');
+  for(const p of matches){
+   const row=document.createElement('div');row.className='person';
+   const avatar=document.createElement('span');avatar.className='avatar';avatar.textContent=(p.displayName||'SF').slice(0,2);
+   const info=document.createElement('div');info.className='person-info';
+   const name=document.createElement('b');name.textContent=p.displayName||'Social Friend সদস্য';
+   const email=document.createElement('small');email.textContent=p.email||'';
+   info.append(name,email);
+   const btn=document.createElement('button');btn.type='button';btn.textContent='বন্ধু যোগ করুন';
+   btn.addEventListener('click',async()=>{
+    btn.disabled=true;
+    try{const id=friendDocId(user.uid,p.uid);await db.collection('friendships').doc(id).set({members:[user.uid,p.uid].sort(),createdBy:user.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});btn.textContent='যুক্ত হয়েছে';}
+    catch(err){btn.disabled=false;friendStatus('বন্ধু যোগ করা যায়নি: '+err.message,true);}
+   });
+   row.append(avatar,info,btn);results.append(row);
+  }
+ }catch(err){friendStatus('সদস্য খোঁজা যায়নি: '+err.message,true);}
+}
+document.getElementById('friendSearchButton').addEventListener('click',searchMembers);
+document.getElementById('friendSearchInput').addEventListener('keydown',e=>{if(e.key==='Enter')searchMembers();});
+async function loadMyFriends(user){
+ const box=document.getElementById('myFriendsList');if(!user){box.textContent='বন্ধুদের তালিকা দেখতে লগইন করুন।';return;}
+ try{
+  const snap=await db.collection('friendships').where('members','array-contains',user.uid).limit(100).get();
+  box.innerHTML='';
+  if(snap.empty){box.textContent='এখনো কোনো বন্ধু যোগ করা হয়নি।';return;}
+  for(const d of snap.docs){const ids=d.data().members||[],other=ids.find(x=>x!==user.uid);if(!other)continue;
+   const p=await db.collection('publicUsers').doc(other).get();if(!p.exists)continue;
+   const row=document.createElement('div');row.className='person';const avatar=document.createElement('span');avatar.className='avatar';avatar.textContent=(p.data().displayName||'SF').slice(0,2);
+   const info=document.createElement('div');info.className='person-info';const name=document.createElement('b');name.textContent=p.data().displayName||'Social Friend সদস্য';const email=document.createElement('small');email.textContent=p.data().email||'';info.append(name,email);
+   const msg=document.createElement('button');msg.textContent='মেসেজ';msg.addEventListener('click',()=>{document.getElementById('chatEmail').value=p.data().email||'';document.querySelector('[data-tab="messages"]')?.click();document.getElementById('startChat').click();});
+   row.append(avatar,info,msg);box.append(row);
+  }
+ }catch(err){box.textContent='বন্ধুদের তালিকা লোড হয়নি: '+err.message;}
+}
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===b.dataset.tab && x.closest('.bottom-nav')===b.closest('.bottom-nav')));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab));if(b.closest('.tabs'))document.querySelectorAll('.tabs [data-tab]').forEach(x=>x.classList.toggle('active',x===b));if(b.closest('.bottom-nav'))document.querySelectorAll('.bottom-nav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));}));
 
 function setUploadStatus(id,message,isError=false){const el=document.getElementById(id);if(el){el.textContent=message;el.style.color=isError?'#b42318':'#1769e0';}}
