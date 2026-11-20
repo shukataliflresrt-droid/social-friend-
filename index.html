@@ -255,17 +255,16 @@ async function startPeerCall(video){
   pc.onicecandidate=e=>{if(e.candidate)callerCandidates.add(e.candidate.toJSON()).catch(console.warn);};
   const offer=await pc.createOffer();await pc.setLocalDescription(offer);
   await callRef.set({callerId:user.uid,calleeId:activeChat.friend.uid,chatId:activeChat.id,offer:{type:offer.type,sdp:offer.sdp},video,status:'ringing',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-  callRef.collection('calleeCandidates').onSnapshot(snap=>snap.docChanges().forEach(change=>{if(change.type==='added')pc.addIceCandidate(new RTCIceCandidate(change.doc.data())).catch(console.warn);}));
   document.getElementById('callPanel').hidden=false;safeText(document.getElementById('callTitle'),video?'ভিডিও কল':'অডিও কল');safeText(document.getElementById('callStatus'),'বন্ধুকে কল করা হচ্ছে…');
   activeCall.candidateUnsub=callRef.collection('calleeCandidates').onSnapshot(snap=>snap.docChanges().forEach(change=>{if(change.type==='added')pc.addIceCandidate(new RTCIceCandidate(change.doc.data())).catch(console.warn);}));
-  activeCall.docUnsub=callRef.onSnapshot(doc=>{const data=doc.data();if(data?.answer&&!pc.currentRemoteDescription)pc.setRemoteDescription(new RTCSessionDescription(data.answer)).catch(console.warn);if(data?.status==='ended')finishCall(false);});
+  activeCall.docUnsub=callRef.onSnapshot(doc=>{const data=doc.data();if(data?.answer&&!pc.currentRemoteDescription)pc.setRemoteDescription(new RTCSessionDescription(data.answer)).catch(console.warn);if(data?.status==='ended')finishCall(false);else if(data?.status==='accepted')safeText(document.getElementById('callStatus'),'কল সংযুক্ত হয়েছে।');});
  }catch(err){chatNotice('কল শুরু হয়নি: '+err.message,true);await finishCall(false);}
 }
 async function acceptIncomingCall(callRef,data){
  try{
   localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:!!data.video});
   const pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
-  localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));const remote=new MediaStream();pc.ontrack=e=>e.streams[0].getTracks().forEach(t=>remote.addTrack(t));
+  localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));const remote=new MediaStream();pc.ontrack=e=>{e.streams[0].getTracks().forEach(t=>remote.addTrack(t));document.getElementById('remoteVideo').srcObject=remote;};
   document.getElementById('remoteVideo').srcObject=remote;document.getElementById('localVideo').srcObject=localStream;document.getElementById('localVideo').hidden=!data.video;document.getElementById('remoteVideo').hidden=!data.video;
   const calleeCandidates=callRef.collection('calleeCandidates');pc.onicecandidate=e=>{if(e.candidate)calleeCandidates.add(e.candidate.toJSON()).catch(console.warn);};
   await pc.setRemoteDescription(new RTCSessionDescription(data.offer));const answer=await pc.createAnswer();await pc.setLocalDescription(answer);
@@ -289,8 +288,8 @@ document.getElementById('acceptCall').addEventListener('click',async()=>{if(acti
 auth.onAuthStateChanged(user=>{
  if(incomingCallUnsubscribe){incomingCallUnsubscribe();incomingCallUnsubscribe=null;}
  if(!user)return;
- incomingCallUnsubscribe=db.collection('calls').where('calleeId','==',user.uid).where('status','==','ringing').onSnapshot(snap=>{
-  snap.docChanges().forEach(change=>{if(change.type!=='added')return;const data=change.doc.data();if(activeCall)return;
+ incomingCallUnsubscribe=db.collection('calls').where('calleeId','==',user.uid).onSnapshot(snap=>{
+  snap.docChanges().forEach(change=>{if(change.type!=='added')return;const data=change.doc.data();if(data.status!=='ringing'||activeCall)return;
    activeCall={incoming:true,ref:change.doc.ref,data};
    document.getElementById('callPanel').hidden=false;document.getElementById('acceptCall').hidden=false;
    safeText(document.getElementById('callTitle'),data.video?'ইনকামিং ভিডিও কল':'ইনকামিং অডিও কল');safeText(document.getElementById('callStatus'),'একটি ইনকামিং কল এসেছে। কল ধরতে নিচের বোতাম চাপুন।');
