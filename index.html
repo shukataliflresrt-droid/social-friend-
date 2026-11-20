@@ -518,6 +518,6 @@ document.getElementById('publish').addEventListener('click',async()=>{
     t.value='';postMediaInput.value='';document.getElementById('postMediaPreview').innerHTML='';document.getElementById('postMediaName').textContent='কোনো ফাইল নির্বাচন করা হয়নি';setUploadStatus('postUploadStatus','আপনার পোস্ট সফলভাবে প্রকাশ হয়েছে।');
   }catch(err){setUploadStatus('postUploadStatus',err.message||'আপলোড করা যায়নি। Firebase Storage/Firestore সেটিংস পরীক্ষা করুন।',true);}
   finally{button.disabled=false;}
-});const t=document.getElementById('postText');if(!t.value.trim())return;const a=document.createElement('article');a.className='card';const p=document.createElement('p');p.textContent=t.value;a.innerHTML='<div class="row"><span class="avatar">You</span><strong>আপনি</strong></div>';a.append(p);const acts=document.createElement('div');acts.className='actions';acts.innerHTML='<button class="like">♡ লাইক</button>';a.append(acts);document.getElementById('feed').prepend(a);t.value=''});
+});
 document.addEventListener('click',e=>{if(e.target.classList.contains('like'))e.target.textContent=e.target.textContent.includes('লাইক')?'♥ লাইক':'♡ লাইক';if(e.target.classList.contains('comment'))alert('মন্তব্য ফিচার লাইভ ব্যাকএন্ডের পরে চালু হবে।')});
 </script></body></html>
