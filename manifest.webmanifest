@@ -2,14 +2,14 @@
   "name": "Social Friend",
   "short_name": "Social Friend",
   "description": "Connect with friends on Social Friend",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "https://shukataliflresrt-droid.github.io/social-friend-/",
+  "scope": "https://shukataliflresrt-droid.github.io/social-friend-/",
   "display": "standalone",
   "background_color": "#0879ef",
   "theme_color": "#0879ef",
   "icons": [
     {
-      "src": "social-friend-icon.svg",
+      "src": "https://raw.githubusercontent.com/shukataliflresrt-droid/social-friend-/main/social-friend-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
@@ -19,10 +19,10 @@
     {
       "name": "Open Social Friend",
       "short_name": "Social Friend",
-      "url": "./",
+      "url": "https://shukataliflresrt-droid.github.io/social-friend-/",
       "icons": [
         {
-          "src": "social-friend-icon.svg",
+          "src": "https://raw.githubusercontent.com/shukataliflresrt-droid/social-friend-/main/social-friend-icon.svg",
           "sizes": "any",
           "type": "image/svg+xml"
         }
