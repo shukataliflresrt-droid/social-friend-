@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#1769e0"><title>Social Friend</title><style>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><link rel="dns-prefetch" href="//www.googleapis.com"><meta name="theme-color" content="#1769e0"><title>Social Friend</title><style>
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#17243a;background:#f4f7fc}*{box-sizing:border-box}body{margin:0}.top{background:#1769e0;color:white;padding:22px max(18px,calc((100% - 760px)/2));display:flex;align-items:center;justify-content:space-between}.brand{font-size:24px;font-weight:800}.wrap{max-width:760px;margin:auto;padding:18px}.hero{background:linear-gradient(135deg,#1769e0,#5b9bff);color:white;border-radius:20px;padding:24px;margin:8px 0 18px}.hero h1{margin:0 0 8px}.tabs,.auth-tabs{display:flex;gap:8px;overflow:auto;margin:12px 0}.tabs button,.auth-tabs button,.action{border:0;border-radius:12px;padding:12px 16px;background:#e6edfb;color:#1769e0;font-weight:700}.tabs button.active,.auth-tabs button.active,.action.primary{background:#1769e0;color:white}.card{background:white;border-radius:18px;padding:20px;margin:14px 0;box-shadow:0 3px 16px #162c5010}.muted{color:#65738b}.avatar{width:42px;height:42px;border-radius:50%;background:#e5eeff;display:inline-grid;place-items:center;color:#1769e0;font-weight:800;margin-right:10px}.row{display:flex;align-items:center}.row strong{display:block}.actions{display:flex;gap:10px;margin-top:14px}.actions button{border:0;background:#f0f4fc;color:#1769e0;padding:10px 14px;border-radius:10px}.panel{display:none}.panel.show{display:block}input,textarea{width:100%;padding:13px;border:1px solid #d9e2f1;border-radius:10px;margin:8px 0;font:inherit}label{font-weight:650;font-size:14px}.notice{font-size:13px;color:#65738b;line-height:1.5}.auth{border:1px solid #dce7fb}.auth h2{margin:4px 0 8px}.auth-form{display:none}.auth-form.show{display:block}.wide{width:100%;margin-top:10px}@media(min-width:700px){.wrap{padding:24px}}
 [hidden]{display:none!important}
 /* Social Friend refreshed login design */
@@ -461,6 +461,7 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
 signedIn.hidden=true;
 auth.onAuthStateChanged(async user=>{
   document.body.classList.toggle('authenticated',!!user);
+  if(!user)friendsLoadedForUid=null;
   document.getElementById('authCard').hidden=!!user;
   const tabs=document.querySelector('.auth-tabs');
   const loginForm=document.getElementById('loginForm');
@@ -474,7 +475,7 @@ auth.onAuthStateChanged(async user=>{
   if(user){
     db.collection('publicUsers').doc(user.uid).set({uid:user.uid,displayName:user.displayName||'',email:(user.email||'').toLowerCase(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}).catch(err=>console.warn('Public profile sync:',err));
     renderProfile(user);
-    loadMyFriends(user);
+    document.getElementById('myFriendsList').textContent='বন্ধু ট্যাবে গেলে তালিকা লোড হবে।';
     setUploadStatus('profileEditStatus','প্রোফাইল ছবি ও কভার ছবি আপলোড করতে পারবেন।');
     signedIn.hidden=false;
     signedIn.textContent='লগইন করা আছে: '+user.email;
@@ -527,20 +528,31 @@ document.getElementById('friendSearchButton').addEventListener('click',searchMem
 document.getElementById('friendSearchInput').addEventListener('keydown',e=>{if(e.key==='Enter')searchMembers();});
 async function loadMyFriends(user){
  const box=document.getElementById('myFriendsList');if(!user){box.textContent='বন্ধুদের তালিকা দেখতে লগইন করুন।';return;}
+ box.textContent='বন্ধুদের তালিকা লোড হচ্ছে…';
  try{
-  const snap=await db.collection('friendships').where('members','array-contains',user.uid).limit(100).get();
-  box.innerHTML='';
+  const snap=await db.collection('friendships').where('members','array-contains',user.uid).limit(50).get();
   if(snap.empty){box.textContent='এখনো কোনো বন্ধু যোগ করা হয়নি।';return;}
-  for(const d of snap.docs){const ids=d.data().members||[],other=ids.find(x=>x!==user.uid);if(!other)continue;
-   const p=await db.collection('publicUsers').doc(other).get();if(!p.exists)continue;
-   const row=document.createElement('div');row.className='person';const avatar=document.createElement('span');avatar.className='avatar';avatar.textContent=(p.data().displayName||'SF').slice(0,2);
-   const info=document.createElement('div');info.className='person-info';const name=document.createElement('b');name.textContent=p.data().displayName||'Social Friend সদস্য';const email=document.createElement('small');email.textContent=p.data().email||'';info.append(name,email);
-   const msg=document.createElement('button');msg.textContent='মেসেজ';msg.addEventListener('click',()=>{document.getElementById('chatEmail').value=p.data().email||'';document.querySelector('[data-tab="messages"]')?.click();document.getElementById('startChat').click();});
+  const ids=[...new Set(snap.docs.map(d=>(d.data().members||[]).find(x=>x!==user.uid)).filter(Boolean))];
+  const profiles=await Promise.all(ids.map(id=>db.collection('publicUsers').doc(id).get()));
+  box.innerHTML='';
+  profiles.forEach(p=>{
+   if(!p.exists)return;const data=p.data();
+   const row=document.createElement('div');row.className='person';const avatar=document.createElement('span');avatar.className='avatar';avatar.textContent=(data.displayName||'SF').slice(0,2);
+   const info=document.createElement('div');info.className='person-info';const name=document.createElement('b');name.textContent=data.displayName||'Social Friend সদস্য';const email=document.createElement('small');email.textContent=data.email||'';info.append(name,email);
+   const msg=document.createElement('button');msg.textContent='মেসেজ';msg.addEventListener('click',()=>{document.getElementById('chatEmail').value=data.email||'';document.querySelector('[data-tab="messages"]')?.click();document.getElementById('startChat').click();});
    row.append(avatar,info,msg);box.append(row);
-  }
+  });
+  if(!box.children.length)box.textContent='বন্ধুদের প্রোফাইল পাওয়া যায়নি।';
  }catch(err){box.textContent='বন্ধুদের তালিকা লোড হয়নি: '+err.message;}
 }
-document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===b.dataset.tab && x.closest('.bottom-nav')===b.closest('.bottom-nav')));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab));if(b.closest('.tabs'))document.querySelectorAll('.tabs [data-tab]').forEach(x=>x.classList.toggle('active',x===b));if(b.closest('.bottom-nav'))document.querySelectorAll('.bottom-nav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));}));
+let friendsLoadedForUid=null;
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===b.dataset.tab && x.closest('.bottom-nav')===b.closest('.bottom-nav')));
+ document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab));
+ if(b.closest('.tabs'))document.querySelectorAll('.tabs [data-tab]').forEach(x=>x.classList.toggle('active',x===b));
+ if(b.closest('.bottom-nav'))document.querySelectorAll('.bottom-nav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));
+ if(b.dataset.tab==='friends'&&auth.currentUser&&friendsLoadedForUid!==auth.currentUser.uid){friendsLoadedForUid=auth.currentUser.uid;loadMyFriends(auth.currentUser);}
+}));
 document.getElementById('accountBtn').addEventListener('click',()=>{document.getElementById('authCard').hidden=false;document.getElementById('authCard').scrollIntoView({behavior:'smooth'});});
 document.getElementById('settingsAccount').addEventListener('click',()=>{document.getElementById('authCard').hidden=false;document.getElementById('authCard').scrollIntoView({behavior:'smooth'});});
 document.getElementById('settingsProfile').addEventListener('click',()=>{document.querySelector('[data-tab="profile"]').click();document.getElementById('profileEditForm').hidden=false;document.getElementById('profileEditForm').scrollIntoView({behavior:'smooth'});});
@@ -566,14 +578,17 @@ async function uploadUserMedia(file,folder,onProgress){
 function renderProfile(user){
   if(!user)return;
   document.getElementById('editDisplayName').value=user.displayName||'';
-  db.collection('users').doc(user.uid).get().then(doc=>{if(doc.exists){const d=doc.data();document.getElementById('editBio').value=d.bio||'';document.getElementById('editLocation').value=d.location||'';}}).catch(()=>{});
   const name=user.displayName||user.email||'আপনার প্রোফাইল';
   document.getElementById('profileDisplayName').textContent=name;
-  const avatar=document.getElementById('profileAvatar');
-  avatar.innerHTML='';
-  if(user.photoURL){const img=document.createElement('img');img.src=user.photoURL;img.alt='প্রোফাইল ছবি';img.className='profile-avatar-img';avatar.append(img);}
+  const avatar=document.getElementById('profileAvatar');avatar.innerHTML='';
+  if(user.photoURL){const img=document.createElement('img');img.src=user.photoURL;img.alt='প্রোফাইল ছবি';img.className='profile-avatar-img';img.decoding='async';avatar.append(img);}
   else avatar.textContent=(name.trim()[0]||'আপ');
-  db.collection('users').doc(user.uid).get().then(doc=>{if(doc.exists&&doc.data().coverPhotoURL)document.getElementById('profileCover').style.backgroundImage='url("'+doc.data().coverPhotoURL.replace(/["\\]/g,'')+'")';}).catch(()=>{});
+  db.collection('users').doc(user.uid).get().then(doc=>{
+   if(!doc.exists)return;const d=doc.data();
+   document.getElementById('editBio').value=d.bio||'';
+   document.getElementById('editLocation').value=d.location||'';
+   if(d.coverPhotoURL)document.getElementById('profileCover').style.backgroundImage='url("'+d.coverPhotoURL.replace(/["\\]/g,'')+'")';
+  }).catch(()=>{});
 }
 document.getElementById('profilePhotoInput').addEventListener('change',async e=>{
   const file=e.target.files&&e.target.files[0];if(!file)return;
