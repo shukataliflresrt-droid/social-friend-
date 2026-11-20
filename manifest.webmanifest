@@ -8,6 +8,25 @@
   "background_color": "#0879ef",
   "theme_color": "#0879ef",
   "icons": [
-    {"src":"social-friend-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+    {
+      "src": "social-friend-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open Social Friend",
+      "short_name": "Social Friend",
+      "url": "./",
+      "icons": [
+        {
+          "src": "social-friend-icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
   ]
 }
