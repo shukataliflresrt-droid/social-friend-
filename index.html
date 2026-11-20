@@ -205,7 +205,7 @@ body.authenticated #authCard{display:none!important}
 <div class="upload-tools"><label for="postMediaInput">▧ ছবি / ভিডিও যোগ করুন</label><input id="postMediaInput" type="file" accept="image/*,video/*"><span class="notice" id="postMediaName">কোনো ফাইল নির্বাচন করা হয়নি</span></div>
 <div class="upload-preview" id="postMediaPreview"></div><div class="upload-status" id="postUploadStatus" role="status" aria-live="polite"></div>
 <button class="action primary wide" id="publish">➤　পোস্ট করুন</button></div></div></div><nav class="tabs" aria-label="প্রধান মেনু"><button class="active" data-tab="home"><span>⌂</span> হোম</button><button data-tab="friends"><span>♧</span> বন্ধু</button><button data-tab="bonus"><span>🎁</span> বোনাস</button><button data-tab="profile"><span>♙</span> প্রোফাইল</button></nav><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">SA</span><div><strong>Sakibud</strong><span class="muted">১ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>বন্ধু মানেই সুখ, বন্ধু মানেই শক্তি 💕</p><div class="photo-scene flowers" role="img" aria-label="ফুলের বাগানের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (২৪)</button><button class="comment">▤ মন্তব্য (৮)</button><button class="share">↗ শেয়ার</button></div></article><article class="card demo-post"><div class="row"><span class="avatar">RI</span><div><strong>Rafiq Islam</strong><span class="muted">২ ঘণ্টা আগে · 🌐</span></div><span class="post-menu">•••</span></div><p>আজকের দিনটি সবার জন্য আনন্দময় হোক! ❤️</p><div class="photo-scene sunset" role="img" aria-label="সূর্যাস্তের নমুনা ছবি"></div><div class="actions"><button class="like">👍 লাইক (১২)</button><button class="comment">▤ মন্তব্য (৩)</button><button class="share">↗ শেয়ার</button></div></article></div></section>
-<section id="friends" class="panel"><div class="card"><h2>বন্ধু খুঁজুন</h2><p class="muted">Social Friend-এ থাকা সদস্যদের খুঁজে বন্ধু হিসেবে যুক্ত করুন।</p><label for="friendSearchInput">নাম বা ইমেইল</label><input id="friendSearchInput" type="search" placeholder="নাম বা ইমেইল লিখুন"><button id="friendSearchButton" class="action primary wide" type="button">সদস্য খুঁজুন</button><p id="friendSearchStatus" class="notice" role="status"></p><div id="friendSearchResults"></div></div><div class="card"><h2>আপনার বন্ধু</h2><div id="myFriendsList"><p class="notice">বন্ধুদের তালিকা দেখতে লগইন করুন।</p></div></div></section>
+<section id="friends" class="panel"><div class="card"><h2>বন্ধু খুঁজুন</h2><p class="muted">Social Friend-এ থাকা সদস্যদের খুঁজে বন্ধু হিসেবে যুক্ত করুন।</p><label for="friendSearchInput">নাম বা ইমেইল</label><input id="friendSearchInput" type="search" placeholder="নাম বা ইমেইল লিখুন"><button id="friendSearchButton" class="action primary wide" type="button">সদস্য খুঁজুন</button><p id="friendSearchStatus" class="notice" role="status"></p><div id="friendSearchResults"></div><h3>আসা Friend Request</h3><div id="incomingFriendRequests" class="notice">রিকোয়েস্ট লোড হচ্ছে…</div></div><div class="card"><h2>আপনার বন্ধু</h2><div id="myFriendsList"><p class="notice">বন্ধুদের তালিকা দেখতে লগইন করুন।</p></div></div></section>
 <section id="messages" class="panel">
 <div class="card messenger-card">
  <div class="messenger-heading"><div><h2>ব্যক্তিগত মেসেঞ্জার</h2><p class="muted">বন্ধুর ইমেইল দিয়ে ব্যক্তিগত চ্যাট শুরু করুন।</p></div><span class="messenger-icon">✉</span></div>
@@ -478,6 +478,7 @@ auth.onAuthStateChanged(async user=>{
     db.collection('publicUsers').doc(user.uid).set({uid:user.uid,displayName:user.displayName||'',email:(user.email||'').toLowerCase(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}).catch(err=>console.warn('Public profile sync:',err));
     renderProfile(user);
     document.getElementById('myFriendsList').textContent='বন্ধু ট্যাবে গেলে তালিকা লোড হবে।';
+    loadIncomingFriendRequests(user);
     setUploadStatus('profileEditStatus','প্রোফাইল ছবি ও কভার ছবি আপলোড করতে পারবেন।');
     signedIn.hidden=false;
     signedIn.textContent='লগইন করা আছে: '+user.email;
@@ -516,11 +517,16 @@ async function searchMembers(){
    const name=document.createElement('b');name.textContent=p.displayName||'Social Friend সদস্য';
    const email=document.createElement('small');email.textContent=p.email||'';
    info.append(name,email);
-   const btn=document.createElement('button');btn.type='button';btn.textContent='বন্ধু যোগ করুন';
+   const btn=document.createElement('button');btn.type='button';btn.textContent='Friend Request পাঠান';
    btn.addEventListener('click',async()=>{
     btn.disabled=true;
-    try{const id=friendDocId(user.uid,p.uid);await db.collection('friendships').doc(id).set({members:[user.uid,p.uid].sort(),createdBy:user.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});btn.textContent='যুক্ত হয়েছে';}
-    catch(err){btn.disabled=false;friendStatus('বন্ধু যোগ করা যায়নি: '+err.message,true);}
+    try{
+     const id=friendDocId(user.uid,p.uid);
+     const existing=await db.collection('friendRequests').doc(id).get();
+     if(existing.exists){const state=existing.data();btn.textContent=state.status==='accepted'?'বন্ধু যুক্ত':state.senderId===user.uid?'রিকোয়েস্ট পাঠানো':'রিকোয়েস্ট এসেছে';return;}
+     await db.collection('friendRequests').doc(id).set({senderId:user.uid,receiverId:p.uid,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+     btn.textContent='রিকোয়েস্ট পাঠানো';
+    }catch(err){btn.disabled=false;friendStatus('রিকোয়েস্ট পাঠানো যায়নি: '+err.message,true);}
    });
    row.append(avatar,info,btn);results.append(row);
   }
@@ -528,6 +534,43 @@ async function searchMembers(){
 }
 document.getElementById('friendSearchButton').addEventListener('click',searchMembers);
 document.getElementById('friendSearchInput').addEventListener('keydown',e=>{if(e.key==='Enter')searchMembers();});
+async function loadIncomingFriendRequests(user){
+ const box=document.getElementById('incomingFriendRequests');if(!box)return;
+ if(!user){box.textContent='রিকোয়েস্ট দেখতে লগইন করুন।';return;}
+ box.textContent='রিকোয়েস্ট লোড হচ্ছে…';
+ try{
+  const snap=await db.collection('friendRequests').where('receiverId','==',user.uid).where('status','==','pending').limit(30).get();
+  if(snap.empty){box.textContent='নতুন Friend Request নেই।';return;}
+  box.innerHTML='';
+  for(const doc of snap.docs){
+   const req=doc.data();const profile=await db.collection('publicUsers').doc(req.senderId).get();
+   const person=profile.exists?profile.data():{displayName:'Social Friend সদস্য'};
+   const row=document.createElement('div');row.className='person';
+   const info=document.createElement('div');info.className='person-info';
+   const name=document.createElement('b');name.textContent=person.displayName||'Social Friend সদস্য';
+   const email=document.createElement('small');email.textContent=person.email||'';
+   info.append(name,email);
+   const accept=document.createElement('button');accept.type='button';accept.textContent='গ্রহণ';
+   accept.addEventListener('click',async()=>{
+    accept.disabled=true;
+    try{
+     const members=[user.uid,req.senderId].sort();
+     await db.collection('friendships').doc(members.join('_')).set({members,createdBy:user.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+     await doc.ref.update({status:'accepted',respondedAt:firebase.firestore.FieldValue.serverTimestamp()});
+     row.remove();if(!box.children.length)box.textContent='নতুন Friend Request নেই।';
+     loadMyFriends(user);
+    }catch(err){accept.disabled=false;friendStatus('রিকোয়েস্ট গ্রহণ করা যায়নি: '+err.message,true);}
+   });
+   const reject=document.createElement('button');reject.type='button';reject.textContent='প্রত্যাখ্যান';
+   reject.addEventListener('click',async()=>{
+    reject.disabled=true;
+    try{await doc.ref.update({status:'rejected',respondedAt:firebase.firestore.FieldValue.serverTimestamp()});row.remove();if(!box.children.length)box.textContent='নতুন Friend Request নেই.';}
+    catch(err){reject.disabled=false;friendStatus('রিকোয়েস্ট প্রত্যাখ্যান করা যায়নি: '+err.message,true);}
+   });
+   row.append(info,accept,reject);box.append(row);
+  }
+ }catch(err){box.textContent='Friend Request লোড হয়নি: '+err.message;}
+}
 async function loadMyFriends(user){
  const box=document.getElementById('myFriendsList');if(!user){box.textContent='বন্ধুদের তালিকা দেখতে লগইন করুন।';return;}
  box.textContent='বন্ধুদের তালিকা লোড হচ্ছে…';
