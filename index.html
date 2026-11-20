@@ -80,6 +80,8 @@ const authNotice = document.getElementById('authNotice');
 const signedIn = document.getElementById('signedIn');
 function showAuthMessage(message, isError=false){authNotice.textContent=message;authNotice.style.color=isError?'#b42318':'#1769e0'}
 function friendlyAuthError(error){
+  const code=error && error.code ? error.code : '';
+  const detail=error && (error.message || String(error)) ? (error.message || String(error)) : 'অজানা ত্রুটি';
   const messages={
     'auth/email-already-in-use':'এই ইমেইল দিয়ে আগে থেকেই অ্যাকাউন্ট আছে। লগইন করুন।',
     'auth/invalid-email':'ইমেইল ঠিকানাটি সঠিক নয়।',
@@ -89,9 +91,11 @@ function friendlyAuthError(error){
     'auth/invalid-credential':'ইমেইল বা পাসওয়ার্ড সঠিক নয়।',
     'auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।',
     'auth/network-request-failed':'ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।',
-    'auth/unauthorized-domain':'এই ওয়েবসাইটের ঠিকানা Firebase-এ অনুমোদন করতে হবে।'
+    'auth/unauthorized-domain':'এই ওয়েবসাইটের ঠিকানা Firebase-এ অনুমোদন করতে হবে।',
+    'auth/operation-not-allowed':'Firebase Console-এ Email/Password sign-in চালু করতে হবে।',
+    'auth/api-key-not-valid.-please-pass-a-valid-api-key.':'Firebase API key সঠিক নয়।'
   };
-  return messages[error.code] || 'এখন কাজটি সম্পন্ন হয়নি। আবার চেষ্টা করুন। ('+(error.code||'error')+')';
+  return messages[code] || ('লগইন/অ্যাকাউন্ট ত্রুটি: '+(code || detail));
 }
 document.getElementById('forgotPassword').addEventListener('click',async()=>{
   const email=document.getElementById('loginEmail').value.trim();
@@ -129,39 +133,39 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
   }catch(error){showAuthMessage(friendlyAuthError(error),true)}
   finally{button.disabled=false}
 });
+signedIn.hidden=true;
 auth.onAuthStateChanged(async user=>{
   const expectedEmail='shukataliflresrt@gmail.com';
-  if(user && (user.email||'').toLowerCase()!==expectedEmail){
-    try{
-      await auth.signOut();
-      showAuthMessage('আগের/অন্য অ্যাকাউন্টের সেশন বন্ধ করা হয়েছে। এখন আপনার নিজের ইমেইল দিয়ে লগইন করুন অথবা নতুন অ্যাকাউন্ট খুলুন।');
-    }catch(error){
-      showAuthMessage('আগের অ্যাকাউন্ট থেকে লগআউট করা যায়নি। আবার চেষ্টা করুন।',true);
-    }
-    return;
-  }
   const tabs=document.querySelector('.auth-tabs');
   const loginForm=document.getElementById('loginForm');
   const signupForm=document.getElementById('signupForm');
-  tabs.hidden=!!user;
-  loginForm.hidden=!!user;
-  signupForm.hidden=!!user;
+  const clearSessionUI=()=>{
+    tabs.hidden=false;loginForm.hidden=false;signupForm.hidden=false;
+    signedIn.hidden=true;signedIn.textContent='';
+    const logout=document.getElementById('logoutButton');if(logout)logout.remove();
+  };
+  if(user && (user.email||'').toLowerCase()!==expectedEmail){
+    clearSessionUI();
+    showAuthMessage('অন্য একটি অ্যাকাউন্টের পুরোনো সেশন পাওয়া গেছে। সেটি বন্ধ করা হচ্ছে—এরপর আপনার নিজের ইমেইল দিয়ে প্রবেশ করুন।');
+    try{await auth.signOut();}catch(error){showAuthMessage('পুরোনো সেশন বন্ধ করা যায়নি: '+friendlyAuthError(error),true);}
+    clearSessionUI();
+    return;
+  }
+  tabs.hidden=!!user;loginForm.hidden=!!user;signupForm.hidden=!!user;
   if(user){
     signedIn.hidden=false;
-    signedIn.textContent='আপনার ইমেইল দিয়ে লগইন আছে: '+user.email;
+    signedIn.textContent='লগইন করা আছে: '+user.email;
     if(!document.getElementById('logoutButton')){
       const logout=document.createElement('button');
       logout.id='logoutButton';logout.className='action wide';logout.textContent='লগআউট';
       logout.addEventListener('click',async()=>{
-        try{await auth.signOut();showAuthMessage('আপনি লগআউট করেছেন।');}
+        try{await auth.signOut();clearSessionUI();showAuthMessage('আপনি লগআউট করেছেন।');}
         catch(error){showAuthMessage(friendlyAuthError(error),true);}
       });
       signedIn.append(logout);
     }
   }else{
-    tabs.hidden=false;loginForm.hidden=false;signupForm.hidden=false;
-    signedIn.hidden=true;signedIn.textContent='';
-    const logout=document.getElementById('logoutButton');if(logout)logout.remove();
+    clearSessionUI();
   }
 });
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab))}));
