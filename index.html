@@ -86,6 +86,29 @@ body{background:linear-gradient(180deg,#e8f1ff 0,#f5f8ff 38%,#edf3ff 100%);paddi
 input,textarea{font-family:inherit}
 @media(min-width:600px){.top-inner{padding:16px 20px}.wrap{padding:18px}.hero{padding:22px}.auth{padding:26px}}
 @media(max-width:390px){.brand-mark{width:43px;height:43px}.brand-copy b{font-size:21px}.tabs button{font-size:12px;gap:3px}.tabs button span{font-size:16px}.wrap{padding-left:10px;padding-right:10px}}
+
+/* Reference-inspired app navigation and profile polish */
+body{padding-bottom:92px}
+.brand-mark{transform:none;border-radius:50%;font-size:0;background:linear-gradient(145deg,#fff,#dceaff);position:relative}
+.brand-mark:before{content:"● ●";position:absolute;top:5px;font-size:12px;letter-spacing:2px;color:#0754df}
+.brand-mark:after{content:"♥";position:absolute;bottom:5px;font-size:21px;color:#ed247d}
+.top-icons button{cursor:pointer}
+.post-photo{width:100%;max-height:300px;object-fit:cover;border-radius:16px;margin-top:10px}
+.person{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #edf1fa}
+.person:last-child{border-bottom:0}
+.person .avatar{flex:0 0 46px;width:46px;height:46px;margin:0}
+.person-info{flex:1;min-width:0}.person-info small{display:block;color:#74829b}
+.person button{border:0;border-radius:18px;background:#e8f0ff;color:#0758dc;padding:9px 13px;font-weight:700}
+.profile-cover{height:100px;border-radius:18px;background:linear-gradient(120deg,#086ff0,#073ab9)}
+.profile-head{display:flex;align-items:end;gap:12px;margin-top:-34px;padding:0 10px}
+.profile-head .avatar{width:76px;height:76px;border:4px solid white;font-size:20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;margin:18px 0}
+.stats b{display:block;font-size:20px;color:#0758dc}.stats small{color:#73809a}
+.bottom-nav{position:fixed;z-index:20;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #dce6f8;box-shadow:0 -5px 20px #153c8014;display:flex;justify-content:center;padding:7px max(8px,calc((100% - 760px)/2)) calc(7px + env(safe-area-inset-bottom))}
+.bottom-nav button{flex:1;border:0;background:transparent;color:#60718f;font:inherit;font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px}
+.bottom-nav button span{font-size:22px;line-height:1.2}.bottom-nav button.active{color:#0758e8}
+.bottom-nav button.create span{background:linear-gradient(120deg,#0878ef,#0753df);color:#fff;border-radius:50%;width:42px;height:42px;display:grid;place-items:center;font-size:28px;margin-top:-15px;box-shadow:0 4px 12px #0754d944}
+@media(min-width:700px){.bottom-nav{border-radius:18px 18px 0 0}}
 </style></head>
 <body><header class="top"><div class="top-inner"><div class="brand"><span class="brand-mark" aria-hidden="true">♥</span><span class="brand-copy"><b>Social Friend</b><small>বন্ধুত্ব হোক আরও গভীর...</small></span></div><div class="top-icons"><button type="button" aria-label="নোটিফিকেশন">♧</button><button type="button" aria-label="খুঁজুন">⌕</button></div></div></header><main class="wrap">
 <section class="hero"><h1>Connect • Share • Grow Together</h1><div>বন্ধু তৈরি করুন • মুহূর্ত শেয়ার করুন • একসঙ্গে এগিয়ে চলুন</div></section>
@@ -95,10 +118,11 @@ input,textarea{font-family:inherit}
 <p class="notice" id="authNotice" role="status" aria-live="polite">Firebase অ্যাকাউন্ট ব্যবস্থার সঙ্গে সংযোগ করা হচ্ছে।</p><div id="signedIn" class="notice" hidden></div></section>
 <nav class="tabs" aria-label="প্রধান মেনু"><button class="active" data-tab="home"><span>⌂</span> হোম</button><button data-tab="friends"><span>♧</span> বন্ধু</button><button data-tab="bonus"><span>🎁</span> বোনাস</button><button data-tab="profile"><span>♙</span> প্রোফাইল</button></nav>
 <section id="home" class="panel show"><div class="card composer"><div class="row"><span class="avatar">আপ</span><div class="composer-main"><h3>আপনার মনের কথা লিখুন</h3><textarea id="postText" rows="2" placeholder="আপনার মনে কী চলছে?"></textarea><button class="action primary wide" id="publish">➤　পোস্ট করুন</button></div></div></div><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article></div></section>
-<section id="friends" class="panel"><div class="card"><h2>আপনার বন্ধু</h2><p>নতুন মানুষ খুঁজুন এবং আপনার কমিউনিটি তৈরি করুন।</p><input placeholder="নাম দিয়ে খুঁজুন"><p class="muted">লাইভ বন্ধু অনুসন্ধান চালু করতে অ্যাকাউন্ট ও সার্ভার সংযোগ প্রয়োজন।</p></div></section>
+<section id="friends" class="panel"><div class="card"><h2>আপনার বন্ধু</h2><p class="muted">নতুন বন্ধু খুঁজুন এবং পরিচিতদের সঙ্গে যুক্ত হোন।</p><input placeholder="নাম দিয়ে খুঁজুন" aria-label="বন্ধু খুঁজুন"><div class="person"><span class="avatar">RI</span><div class="person-info"><b>Rafiq Islam</b><small>বন্ধু হওয়ার আমন্ত্রণ</small></div><button type="button">বন্ধু হন</button></div><div class="person"><span class="avatar">MA</span><div class="person-info"><b>Mariya Akter</b><small>নতুন সদস্য</small></div><button type="button">বন্ধু হন</button></div><div class="person"><span class="avatar">RU</span><div class="person-info"><b>Rahim Uddin</b><small>কমিউনিটি সদস্য</small></div><button type="button">বন্ধু হন</button></div><p class="notice">এগুলো নমুনা প্রোফাইল; প্রকৃত বন্ধু তালিকার জন্য ডেটাবেজ সংযোগ প্রয়োজন।</p></div></section>
+<section id="messages" class="panel"><div class="card"><h2>বার্তা</h2><p class="muted">আপনার বন্ধুদের সঙ্গে ব্যক্তিগতভাবে কথা বলুন।</p><div class="person"><span class="avatar">RI</span><div class="person-info"><b>Rafiq Islam</b><small>চ্যাট শুরু করুন</small></div><button type="button">মেসেজ</button></div><div class="person"><span class="avatar">MA</span><div class="person-info"><b>Mariya Akter</b><small>চ্যাট শুরু করুন</small></div><button type="button">মেসেজ</button></div><p class="notice">চ্যাট এখনো ডেমো; লাইভ মেসেজিংয়ের জন্য নিরাপদ ডেটাবেজ ও রিয়েল-টাইম নিয়ম সেটআপ করতে হবে।</p></div></section>
 <section id="bonus" class="panel"><div class="card"><h2>Friend Bonus</h2><h1 style="color:#1769e0">$1</h1><p>প্রতি যোগ্য বন্ধুর জন্য (প্রস্তাবিত নিয়ম)</p><h1 style="color:#1769e0">$50</h1><p>৫০ জন যোগ্য বন্ধু হলে এককালীন বোনাস (প্রস্তাবিত নিয়ম)</p><p class="notice">এটি পরিকল্পনার ডেমো। যাচাই, প্রতারণা প্রতিরোধ, আইনগত পর্যালোচনা ও পেমেন্ট ব্যবস্থা ছাড়া কোনো বোনাস অর্জিত বা পরিশোধযোগ্য নয়।</p></div></section>
-<section id="profile" class="panel"><div class="card"><h2>প্রোফাইল</h2><p class="muted">প্রোফাইল ব্যবস্থাপনা চালু করতে নিরাপদ অ্যাকাউন্ট সংযোগ প্রয়োজন।</p></div></section>
-<footer class="site-footer"><strong>Social Friend</strong><span>Connect • Share • Grow Together</span><small>আপনার বন্ধুত্বের নতুন ঠিকানা</small></footer></main>
+<section id="profile" class="panel"><div class="card"><div class="profile-cover"></div><div class="profile-head"><span class="avatar">আপ</span><div><h2 style="margin:0">আপনার প্রোফাইল</h2><small class="muted">Social Friend সদস্য</small></div></div><div class="stats"><div><b>০</b><small>পোস্ট</small></div><div><b>০</b><small>বন্ধু</small></div><div><b>০</b><small>অনুসারী</small></div></div><button class="action primary wide" type="button" onclick="document.querySelector('[data-auth=login]').scrollIntoView({behavior:'smooth'})">প্রোফাইল সম্পাদনা</button><p class="notice">আপনার নিজের তথ্য লগইন করার পর সংরক্ষণ করা যাবে।</p></div></section>
+<nav class="bottom-nav" aria-label="নিচের মেনু"><button class="active" data-tab="home"><span>⌂</span>হোম</button><button data-tab="friends"><span>♧</span>বন্ধু</button><button class="create" data-tab="home" onclick="document.getElementById('postText').focus();document.getElementById('postText').scrollIntoView({behavior:'smooth',block:'center'})"><span>＋</span>পোস্ট</button><button data-tab="messages"><span>▤</span>বার্তা</button><button data-tab="profile"><span>♙</span>প্রোফাইল</button></nav><footer class="site-footer"><strong>Social Friend</strong><span>Connect • Share • Grow Together</span><small>আপনার বন্ধুত্বের নতুন ঠিকানা</small></footer></main>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script>
@@ -206,7 +230,7 @@ auth.onAuthStateChanged(async user=>{
     clearSessionUI();
   }
 });
-document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab))}));
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===b.dataset.tab && x.closest('.bottom-nav')===b.closest('.bottom-nav')));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab));if(b.closest('.tabs'))document.querySelectorAll('.tabs [data-tab]').forEach(x=>x.classList.toggle('active',x===b));if(b.closest('.bottom-nav'))document.querySelectorAll('.bottom-nav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));}));
 document.getElementById('publish').addEventListener('click',()=>{const t=document.getElementById('postText');if(!t.value.trim())return;const a=document.createElement('article');a.className='card';const p=document.createElement('p');p.textContent=t.value;a.innerHTML='<div class="row"><span class="avatar">You</span><strong>আপনি</strong></div>';a.append(p);const acts=document.createElement('div');acts.className='actions';acts.innerHTML='<button class="like">♡ লাইক</button>';a.append(acts);document.getElementById('feed').prepend(a);t.value=''});
 document.addEventListener('click',e=>{if(e.target.classList.contains('like'))e.target.textContent=e.target.textContent.includes('লাইক')?'♥ লাইক':'♡ লাইক';if(e.target.classList.contains('comment'))alert('মন্তব্য ফিচার লাইভ ব্যাকএন্ডের পরে চালু হবে।')});
 </script></body></html>
