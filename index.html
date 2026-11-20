@@ -89,8 +89,8 @@ document.getElementById('signupForm').addEventListener('submit',async e=>{
   button.disabled=true;showAuthMessage('আপনার অ্যাকাউন্ট তৈরি করা হচ্ছে…');
   try{
     const credential=await auth.createUserWithEmailAndPassword(email,password);
-    await credential.user.updateProfile({displayName:name});
-    showAuthMessage('অভিনন্দন! আপনার Social Friend অ্যাকাউন্ট তৈরি হয়েছে।');
+    try{await credential.user.updateProfile({displayName:name});}catch(profileError){console.warn('Profile name could not be saved:',profileError);}
+    showAuthMessage('অভিনন্দন! আপনার Social Friend অ্যাকাউন্ট তৈরি হয়েছে। আপনার ইমেইল যাচাইয়ের বার্তা এলে সেটি অনুসরণ করুন।');
     e.currentTarget.reset();
   }catch(error){showAuthMessage(friendlyAuthError(error),true)}
   finally{button.disabled=false}
@@ -109,10 +109,6 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
   finally{button.disabled=false}
 });
 auth.onAuthStateChanged(user=>{
-  if(user && user.email && user.email.toLowerCase() !== 'shukataliflresrt@gmail.com'){
-    auth.signOut().then(()=>showAuthMessage('আগের অন্য অ্যাকাউন্ট থেকে লগআউট করা হয়েছে। এখন আপনার নিজের ইমেইল দিয়ে লগইন করুন।'));
-    return;
-  }
   document.querySelector('.auth-tabs').hidden=!!user;
   document.getElementById('loginForm').hidden=!!user;
   document.getElementById('signupForm').hidden=!!user;
