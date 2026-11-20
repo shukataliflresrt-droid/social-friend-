@@ -196,6 +196,10 @@ body{background:#edf3ff;padding-bottom:88px}
 <div class="upload-status" id="profileEditStatus" role="status" aria-live="polite">ছবি আপলোড করতে আগে লগইন করুন।</div>
 <div class="profile-head"><span class="avatar" id="profileAvatar">আপ</span><div><h2 style="margin:0" id="profileDisplayName">আপনার প্রোফাইল</h2><small class="muted">Social Friend সদস্য</small></div></div><div class="stats"><div><b>০</b><small>পোস্ট</small></div><div><b>০</b><small>বন্ধু</small></div><div><b>০</b><small>অনুসারী</small></div></div><button class="action primary wide" type="button" onclick="document.querySelector('[data-auth=login]').scrollIntoView({behavior:'smooth'})">প্রোফাইল সম্পাদনা</button><p class="notice">আপনার নিজের তথ্য লগইন করার পর সংরক্ষণ করা যাবে।</p></div></section>
 <nav class="bottom-nav" aria-label="নিচের মেনু"><button class="active" data-tab="home"><span>⌂</span>হোম</button><button data-tab="friends"><span>♧</span>বন্ধু</button><button class="create" data-tab="home" onclick="document.getElementById('postText').focus();document.getElementById('postText').scrollIntoView({behavior:'smooth',block:'center'})"><span>＋</span>পোস্ট</button><button data-tab="messages"><span>▤</span>বার্তা</button><button data-tab="profile"><span>♙</span>প্রোফাইল</button></nav><footer class="site-footer"><strong>Social Friend</strong><span>Connect • Share • Grow Together</span><small>আপনার বন্ধুত্বের নতুন ঠিকানা</small></footer></main>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
 /* Direct one-to-one chat and WebRTC call signalling */
 let activeChat=null, chatUnsubscribe=null, incomingCallUnsubscribe=null, activeCall=null, localStream=null;
@@ -298,9 +302,9 @@ auth.onAuthStateChanged(user=>{
 });
 
 </script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+
+
 <script>
 document.getElementById('accountBtn').addEventListener('click',()=>{const card=document.getElementById('authCard');card.hidden=!card.hidden;if(!card.hidden)card.scrollIntoView({behavior:'smooth',block:'start'});});
 document.getElementById('searchBtn').addEventListener('click',()=>{document.querySelector('#friends input')?.focus();document.querySelector('[data-tab="friends"]')?.click();});
