@@ -129,22 +129,37 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
   }catch(error){showAuthMessage(friendlyAuthError(error),true)}
   finally{button.disabled=false}
 });
-auth.onAuthStateChanged(user=>{
-  document.querySelector('.auth-tabs').hidden=!!user;
-  document.getElementById('loginForm').hidden=!!user;
-  document.getElementById('signupForm').hidden=!!user;
+auth.onAuthStateChanged(async user=>{
+  const expectedEmail='shukataliflresrt@gmail.com';
+  if(user && (user.email||'').toLowerCase()!==expectedEmail){
+    try{
+      await auth.signOut();
+      showAuthMessage('আগের/অন্য অ্যাকাউন্টের সেশন বন্ধ করা হয়েছে। এখন আপনার নিজের ইমেইল দিয়ে লগইন করুন অথবা নতুন অ্যাকাউন্ট খুলুন।');
+    }catch(error){
+      showAuthMessage('আগের অ্যাকাউন্ট থেকে লগআউট করা যায়নি। আবার চেষ্টা করুন।',true);
+    }
+    return;
+  }
+  const tabs=document.querySelector('.auth-tabs');
+  const loginForm=document.getElementById('loginForm');
+  const signupForm=document.getElementById('signupForm');
+  tabs.hidden=!!user;
+  loginForm.hidden=!!user;
+  signupForm.hidden=!!user;
   if(user){
     signedIn.hidden=false;
-    signedIn.textContent='বর্তমানে লগইন আছে: '+(user.email||user.displayName)+'। এটি আপনার কাঙ্ক্ষিত অ্যাকাউন্ট না হলে লগআউট করুন।';
+    signedIn.textContent='আপনার ইমেইল দিয়ে লগইন আছে: '+user.email;
     if(!document.getElementById('logoutButton')){
-      const logout=document.createElement('button');logout.id='logoutButton';logout.className='action wide';logout.textContent='লগআউট';
-      logout.addEventListener('click',()=>auth.signOut().then(()=>showAuthMessage('আপনি লগআউট করেছেন।')).catch(error=>showAuthMessage(friendlyAuthError(error),true)));
+      const logout=document.createElement('button');
+      logout.id='logoutButton';logout.className='action wide';logout.textContent='লগআউট';
+      logout.addEventListener('click',async()=>{
+        try{await auth.signOut();showAuthMessage('আপনি লগআউট করেছেন।');}
+        catch(error){showAuthMessage(friendlyAuthError(error),true);}
+      });
       signedIn.append(logout);
     }
   }else{
-    document.querySelector('.auth-tabs').hidden=false;
-    document.getElementById('loginForm').hidden=false;
-    document.getElementById('signupForm').hidden=false;
+    tabs.hidden=false;loginForm.hidden=false;signupForm.hidden=false;
     signedIn.hidden=true;signedIn.textContent='';
     const logout=document.getElementById('logoutButton');if(logout)logout.remove();
   }
