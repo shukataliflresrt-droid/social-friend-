@@ -1,22 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-<defs>
- <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#16d9ff"/><stop offset=".48" stop-color="#0879ef"/><stop offset="1" stop-color="#052aab"/></linearGradient>
- <linearGradient id="ribbon" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#153fe5"/><stop offset="1" stop-color="#06166f"/></linearGradient>
- <radialGradient id="globe"><stop stop-color="#fff"/><stop offset="1" stop-color="#bfeaff"/></radialGradient>
- <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="7"/><feOffset dy="7"/><feComponentTransfer><feFuncA type="linear" slope=".35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-</defs>
-<rect width="512" height="512" rx="108" fill="url(#bg)"/>
-<circle cx="256" cy="195" r="154" fill="url(#globe)" stroke="#fff" stroke-width="10"/>
-<circle cx="256" cy="195" r="137" fill="none" stroke="#1686ee" stroke-width="8"/>
-<path d="M119 195h274M256 58c-60 58-60 216 0 274M256 58c60 58 60 216 0 274" fill="none" stroke="#1686ee" stroke-width="8" opacity=".55"/>
-<path d="M165 125l22-17 16 9 5 20-17 13-20-7zM302 91l29 9 11 24-17 17-23-11-9-21zM327 208l24-13 19 14-5 26-26 10-16-17zM179 240l23-9 17 19-10 27-26-8z" fill="#0879ef" opacity=".9"/>
-<g filter="url(#shadow)" stroke="#fff" stroke-width="8">
- <circle cx="164" cy="190" r="35" fill="#21cf4b"/><path d="M105 302c3-62 25-91 59-91s56 29 59 91z" fill="#21cf4b"/>
- <circle cx="256" cy="148" r="42" fill="#0879ef"/><path d="M183 302c4-74 30-111 73-111s69 37 73 111z" fill="#0879ef"/>
- <circle cx="348" cy="190" r="35" fill="#ef238e"/><path d="M289 302c3-62 25-91 59-91s56 29 59 91z" fill="#ef238e"/>
-</g>
-<path d="M30 323Q256 270 482 323v139Q256 505 30 462Z" fill="url(#ribbon)" stroke="#fff" stroke-width="9" filter="url(#shadow)"/>
-<text x="256" y="390" text-anchor="middle" font-family="Arial,sans-serif" font-size="62" font-weight="900" fill="#fff">Social</text>
-<text x="256" y="454" text-anchor="middle" font-family="Arial,sans-serif" font-size="67" font-weight="900" fill="#ffe600">Friend</text>
-<path d="M220 480q36-28 72 0-36 30-72 0" fill="#fff" opacity=".95"/>
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#36A9FF"/>
+      <stop offset="0.52" stop-color="#1877F2"/>
+      <stop offset="1" stop-color="#0752C7"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+      <feOffset dy="8"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".22"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#blue)"/>
+  <path d="M363 157c-24-31-61-48-111-48-78 0-130 42-130 105 0 55 36 82 119 99 48 10 65 20 65 39 0 21-22 34-57 34-42 0-77-17-105-49l-58 61c38 47 94 72 163 72 87 0 145-43 145-113 0-57-37-85-121-103-46-10-63-19-63-37 0-17 17-27 45-27 32 0 59 12 82 36z"
+        fill="#fff" filter="url(#shadow)"/>
+  <path d="M360 385c28 0 51 22 51 49 0 27-23 49-51 49-13 0-25-5-34-13l-29 8 9-28c-4-7-6-15-6-23 0-22 15-41 36-48 7-3 15-4 24-4z"
+        fill="#fff" opacity=".96"/>
+  <circle cx="343" cy="434" r="5" fill="#1877F2"/>
+  <circle cx="360" cy="434" r="5" fill="#1877F2"/>
+  <circle cx="377" cy="434" r="5" fill="#1877F2"/>
 </svg>
