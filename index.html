@@ -592,12 +592,14 @@ async function loadMyFriends(user){
 }
 let friendsLoadedForUid=null;
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{
+ try{sessionStorage.setItem('sf_active_tab',b.dataset.tab);}catch(_){}
  document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===b.dataset.tab && x.closest('.bottom-nav')===b.closest('.bottom-nav')));
  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===b.dataset.tab));
  if(b.closest('.tabs'))document.querySelectorAll('.tabs [data-tab]').forEach(x=>x.classList.toggle('active',x===b));
  if(b.closest('.bottom-nav'))document.querySelectorAll('.bottom-nav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));
  if(b.dataset.tab==='friends'&&auth.currentUser&&friendsLoadedForUid!==auth.currentUser.uid){friendsLoadedForUid=auth.currentUser.uid;loadMyFriends(auth.currentUser);}
 }));
+try{const savedTab=sessionStorage.getItem('sf_active_tab');if(savedTab&&document.getElementById(savedTab)){document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('show',p.id===savedTab));document.querySelectorAll('.bottom-nav [data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===savedTab));document.querySelectorAll('.tabs [data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===savedTab));}}catch(_){}
 document.getElementById('accountBtn').addEventListener('click',()=>{document.getElementById('authCard').hidden=false;document.getElementById('authCard').scrollIntoView({behavior:'smooth'});});
 document.getElementById('settingsAccount').addEventListener('click',()=>{document.getElementById('authCard').hidden=false;document.getElementById('authCard').scrollIntoView({behavior:'smooth'});});
 document.getElementById('settingsProfile').addEventListener('click',()=>{document.querySelector('[data-tab="profile"]').click();document.getElementById('profileEditForm').hidden=false;document.getElementById('profileEditForm').scrollIntoView({behavior:'smooth'});});
@@ -607,9 +609,22 @@ document.getElementById('profileEditForm').addEventListener('submit',async e=>{e
 
 function setUploadStatus(id,message,isError=false){const el=document.getElementById(id);if(el){el.textContent=message;el.style.color=isError?'#b42318':'#1769e0';}}
 function requireSignedIn(){const user=auth.currentUser;if(!user){setUploadStatus('profileEditStatus','ছবি বা ভিডিও আপলোড করতে আগে লগইন করুন।',true);document.getElementById('authCard').hidden=false;document.getElementById('authCard').scrollIntoView({behavior:'smooth'});return null;}return user;}
+async function compressImageForUpload(file){
+  if(!file||!file.type.startsWith('image/')||file.size<900*1024)return file;
+  try{
+    const image=await createImageBitmap(file);
+    const scale=Math.min(1,1920/Math.max(image.width,image.height));
+    const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));
+    const ctx=canvas.getContext('2d',{alpha:false});ctx.drawImage(image,0,0,canvas.width,canvas.height);image.close&&image.close();
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',0.82));
+    if(!blob)return file;
+    return new File([blob],(file.name||'photo').replace(/\\.[^.]+$/,'')+'.jpg',{type:'image/jpeg',lastModified:Date.now()});
+  }catch(error){console.warn('Image compression skipped:',error);return file;}
+}
 async function uploadUserMedia(file,folder,onProgress){
   const user=requireSignedIn();if(!user)throw new Error('আগে লগইন করুন।');
   if(!file)throw new Error('ফাইল নির্বাচন করুন।');
+  if(file.type.startsWith('image/')){if(onProgress)onProgress(0);file=await compressImageForUpload(file);}
   const isVideo=file.type.startsWith('video/'),isImage=file.type.startsWith('image/');
   if(!isVideo&&!isImage)throw new Error('শুধু ছবি অথবা ভিডিও নির্বাচন করুন।');
   const max=isVideo?100*1024*1024:15*1024*1024;
