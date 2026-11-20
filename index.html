@@ -27,15 +27,36 @@ input:focus,textarea:focus{outline:3px solid #1769e022;border-color:#1769e0}
 .tabs button{border-radius:14px}
 @media(min-width:700px){.wrap{padding:24px}.auth{padding:30px}}
 
+/* Home feed style inspired by supplied reference */
+body{background:#eef3ff;color:#102b61;padding-bottom:76px}
+.top{position:relative;min-height:82px;padding:13px max(16px,calc((100% - 760px)/2));display:flex;gap:9px;align-items:center;justify-content:flex-start}
+.brand{display:flex;align-items:center;gap:9px;color:#fff;font-size:clamp(23px,5vw,31px);letter-spacing:-.5px}
+.brand-mark{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#0754df;border:3px solid #cfe0ff;font-size:24px}
+.tagline{font-size:13px;color:#e5efff;align-self:flex-end;margin:0 0 8px 2px}
+.top-icons{margin-left:auto;color:white;font-size:25px;font-weight:800}
+.wrap{max-width:760px;padding:14px}
+.hero{margin:0 0 10px;padding:10px;text-align:center;color:#1749ad}
+.hero h1{font-size:clamp(18px,4vw,24px);margin:0 0 5px}
+.hero div{font-size:13px;color:#536b9a}
+.card{background:#fff;border:1px solid #e0e9ff;border-radius:22px;padding:17px;margin:12px 0;box-shadow:0 5px 18px #123d8b12}
+.tabs{display:flex;justify-content:space-between;gap:6px;background:#e1eaff;border-radius:18px;padding:5px;position:sticky;top:0;z-index:5}
+.tabs button{flex:1;white-space:nowrap;padding:11px 8px;border-radius:14px;font-size:14px}
+.tabs button.active{background:#0758e8;color:#fff;box-shadow:0 3px 10px #0758e833}
+.composer{padding:15px}.composer .row{align-items:flex-start}.composer .avatar{flex:0 0 44px;margin-top:8px}
+.composer-main{flex:1;min-width:0}.composer h3{margin:5px 0;color:#18366e;font-size:17px}
+.composer textarea{margin:5px 0 8px;border-radius:24px;min-height:52px}.composer .wide{margin-top:0}
+#feed .card{padding:17px}#feed p{line-height:1.6;color:#1d2c49}
+.actions{flex-wrap:wrap}.actions button{border:1px solid #dce6fb;border-radius:22px;background:#fff;font-weight:650}
+@media(max-width:420px){.tagline{display:none}.top{min-height:76px}.brand-mark{width:38px;height:38px}.tabs button{font-size:12px;padding:10px 4px}.wrap{padding:10px}}
 </style></head>
-<body><header class="top"><div class="brand">Social Friend</div><div>Connect • Share • Grow</div></header><main class="wrap">
-<section class="hero"><h1>স্বাগতম Social Friend-এ!</h1><div>বন্ধুদের সঙ্গে যুক্ত হোন, মুহূর্ত ভাগ করুন এবং নিজের কমিউনিটি গড়ে তুলুন।</div></section>
+<body><header class="top"><div class="brand"><span class="brand-mark">●</span><span>Social Friend</span></div><div class="tagline">বন্ধুত্ব হোক আরও গভীর...</div><div class="top-icons">♧　⌕</div></header><main class="wrap">
+<section class="hero"><h1>Connect • Share • Grow Together</h1><div>বন্ধু তৈরি করুন • মুহূর্ত শেয়ার করুন • একসঙ্গে এগিয়ে চলুন</div></section>
 <section class="card auth"><h2>আপনার অ্যাকাউন্টে প্রবেশ করুন</h2><p class="muted">Social Friend-এ যোগ দিন অথবা আপনার অ্যাকাউন্টে লগইন করুন।</p><div class="auth-tabs"><button class="active" data-auth="login">লগইন</button><button data-auth="signup">নতুন অ্যাকাউন্ট খুলুন</button></div>
 <form id="loginForm" class="auth-form show"><label for="loginEmail">ইমেইল</label><input id="loginEmail" type="email" autocomplete="email" placeholder="আপনার ইমেইল লিখুন" required><label for="loginPassword">পাসওয়ার্ড</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="পাসওয়ার্ড লিখুন" required><button class="action primary wide" type="submit">লগইন করুন</button><button class="action wide" id="forgotPassword" type="button">পাসওয়ার্ড ভুলে গেছেন?</button></form>
 <form id="signupForm" class="auth-form"><label for="fullName">আপনার নাম</label><input id="fullName" autocomplete="name" placeholder="সম্পূর্ণ নাম লিখুন" required><label for="signupEmail">ইমেইল</label><input id="signupEmail" type="email" autocomplete="email" placeholder="আপনার ইমেইল লিখুন" required><label for="signupPassword">পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label><input id="signupPassword" type="password" minlength="8" autocomplete="new-password" placeholder="নতুন পাসওয়ার্ড তৈরি করুন" required><button class="action primary wide" type="submit">অ্যাকাউন্ট তৈরি করুন</button></form>
 <p class="notice" id="authNotice" role="status" aria-live="polite">Firebase অ্যাকাউন্ট ব্যবস্থার সঙ্গে সংযোগ করা হচ্ছে।</p><div id="signedIn" class="notice" hidden></div></section>
 <nav class="tabs"><button class="active" data-tab="home">হোম</button><button data-tab="friends">বন্ধু</button><button data-tab="bonus">বোনাস</button><button data-tab="profile">প্রোফাইল</button></nav>
-<section id="home" class="panel show"><div class="card"><h3>আপনার আপডেট লিখুন</h3><textarea id="postText" rows="3" placeholder="আপনার মনের কথা লিখুন..."></textarea><button class="action primary" id="publish">পোস্ট করুন</button></div><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article></div></section>
+<section id="home" class="panel show"><div class="card composer"><div class="row"><span class="avatar">আপ</span><div class="composer-main"><h3>আপনার মনের কথা লিখুন</h3><textarea id="postText" rows="2" placeholder="আপনার মনে কী চলছে?"></textarea><button class="action primary wide" id="publish">➤　পোস্ট করুন</button></div></div></div><div id="feed"><article class="card"><div class="row"><span class="avatar">SF</span><div><strong>Social Friend</strong><span class="muted">স্বাগতম পোস্ট</span></div></div><p>আপনার নতুন কমিউনিটি এখান থেকেই শুরু। বন্ধু খুঁজুন এবং আপনার মুহূর্ত শেয়ার করুন!</p><div class="actions"><button class="like">♡ লাইক</button><button class="comment">মন্তব্য</button></div></article></div></section>
 <section id="friends" class="panel"><div class="card"><h2>আপনার বন্ধু</h2><p>নতুন মানুষ খুঁজুন এবং আপনার কমিউনিটি তৈরি করুন।</p><input placeholder="নাম দিয়ে খুঁজুন"><p class="muted">লাইভ বন্ধু অনুসন্ধান চালু করতে অ্যাকাউন্ট ও সার্ভার সংযোগ প্রয়োজন।</p></div></section>
 <section id="bonus" class="panel"><div class="card"><h2>Friend Bonus</h2><h1 style="color:#1769e0">$1</h1><p>প্রতি যোগ্য বন্ধুর জন্য (প্রস্তাবিত নিয়ম)</p><h1 style="color:#1769e0">$50</h1><p>৫০ জন যোগ্য বন্ধু হলে এককালীন বোনাস (প্রস্তাবিত নিয়ম)</p><p class="notice">এটি পরিকল্পনার ডেমো। যাচাই, প্রতারণা প্রতিরোধ, আইনগত পর্যালোচনা ও পেমেন্ট ব্যবস্থা ছাড়া কোনো বোনাস অর্জিত বা পরিশোধযোগ্য নয়।</p></div></section>
 <section id="profile" class="panel"><div class="card"><h2>প্রোফাইল</h2><p class="muted">প্রোফাইল ব্যবস্থাপনা চালু করতে নিরাপদ অ্যাকাউন্ট সংযোগ প্রয়োজন।</p></div></section>
