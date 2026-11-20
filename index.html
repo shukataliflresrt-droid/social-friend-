@@ -109,6 +109,10 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
   finally{button.disabled=false}
 });
 auth.onAuthStateChanged(user=>{
+  if(user && user.email && user.email.toLowerCase() !== 'shukataliflresrt@gmail.com'){
+    auth.signOut().then(()=>showAuthMessage('আগের অন্য অ্যাকাউন্ট থেকে লগআউট করা হয়েছে। এখন আপনার নিজের ইমেইল দিয়ে লগইন করুন।'));
+    return;
+  }
   document.querySelector('.auth-tabs').hidden=!!user;
   document.getElementById('loginForm').hidden=!!user;
   document.getElementById('signupForm').hidden=!!user;
