@@ -1,10 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#12d7ff"/><stop offset=".52" stop-color="#0879ef"/><stop offset="1" stop-color="#062fb9"/></linearGradient><linearGradient id="plate" x2="0" y2="1"><stop stop-color="#153ee0"/><stop offset="1" stop-color="#061b91"/></linearGradient></defs>
-<rect width="512" height="512" rx="112" fill="url(#bg)"/><circle cx="256" cy="190" r="142" fill="#fff" opacity=".95"/><circle cx="256" cy="190" r="128" fill="none" stroke="#0878ef" stroke-width="12"/><path d="M128 190h256M256 62c-54 54-54 202 0 256M256 62c54 54 54 202 0 256" fill="none" stroke="#1684f4" stroke-width="9" opacity=".55"/>
-<circle cx="165" cy="185" r="35" fill="#19c94b" stroke="#fff" stroke-width="8"/><path d="M105 285c3-52 25-79 60-79s57 27 60 79" fill="#19c94b" stroke="#fff" stroke-width="8" stroke-linejoin="round"/>
-<circle cx="256" cy="142" r="43" fill="#0878ef" stroke="#fff" stroke-width="9"/><path d="M180 275c4-70 31-105 76-105s72 35 76 105" fill="#0878ef" stroke="#fff" stroke-width="9" stroke-linejoin="round"/>
-<circle cx="347" cy="185" r="35" fill="#ed2186" stroke="#fff" stroke-width="8"/><path d="M287 285c3-52 25-79 60-79s57 27 60 79" fill="#ed2186" stroke="#fff" stroke-width="8" stroke-linejoin="round"/>
-<path d="M360 306c0-20 26-27 39-8 13-19 39-12 39 8 0 26-39 49-39 49s-39-23-39-49" fill="#ff253c" stroke="#fff" stroke-width="5"/>
-<rect x="26" y="326" width="460" height="160" rx="52" fill="url(#plate)" stroke="#fff" stroke-width="9"/>
-<text x="256" y="401" font-family="Arial,sans-serif" font-size="66" font-weight="800" text-anchor="middle" fill="#fff">Social</text><text x="256" y="465" font-family="Arial,sans-serif" font-size="70" font-weight="900" text-anchor="middle" fill="#ffe600">Friend</text>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#16d9ff"/><stop offset=".48" stop-color="#0879ef"/><stop offset="1" stop-color="#052aab"/></linearGradient>
+ <linearGradient id="ribbon" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#153fe5"/><stop offset="1" stop-color="#06166f"/></linearGradient>
+ <radialGradient id="globe"><stop stop-color="#fff"/><stop offset="1" stop-color="#bfeaff"/></radialGradient>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="7"/><feOffset dy="7"/><feComponentTransfer><feFuncA type="linear" slope=".35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="512" height="512" rx="108" fill="url(#bg)"/>
+<circle cx="256" cy="195" r="154" fill="url(#globe)" stroke="#fff" stroke-width="10"/>
+<circle cx="256" cy="195" r="137" fill="none" stroke="#1686ee" stroke-width="8"/>
+<path d="M119 195h274M256 58c-60 58-60 216 0 274M256 58c60 58 60 216 0 274" fill="none" stroke="#1686ee" stroke-width="8" opacity=".55"/>
+<path d="M165 125l22-17 16 9 5 20-17 13-20-7zM302 91l29 9 11 24-17 17-23-11-9-21zM327 208l24-13 19 14-5 26-26 10-16-17zM179 240l23-9 17 19-10 27-26-8z" fill="#0879ef" opacity=".9"/>
+<g filter="url(#shadow)" stroke="#fff" stroke-width="8">
+ <circle cx="164" cy="190" r="35" fill="#21cf4b"/><path d="M105 302c3-62 25-91 59-91s56 29 59 91z" fill="#21cf4b"/>
+ <circle cx="256" cy="148" r="42" fill="#0879ef"/><path d="M183 302c4-74 30-111 73-111s69 37 73 111z" fill="#0879ef"/>
+ <circle cx="348" cy="190" r="35" fill="#ef238e"/><path d="M289 302c3-62 25-91 59-91s56 29 59 91z" fill="#ef238e"/>
+</g>
+<path d="M30 323Q256 270 482 323v139Q256 505 30 462Z" fill="url(#ribbon)" stroke="#fff" stroke-width="9" filter="url(#shadow)"/>
+<text x="256" y="390" text-anchor="middle" font-family="Arial,sans-serif" font-size="62" font-weight="900" fill="#fff">Social</text>
+<text x="256" y="454" text-anchor="middle" font-family="Arial,sans-serif" font-size="67" font-weight="900" fill="#ffe600">Friend</text>
+<path d="M220 480q36-28 72 0-36 30-72 0" fill="#fff" opacity=".95"/>
 </svg>
